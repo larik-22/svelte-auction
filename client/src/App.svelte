@@ -14,6 +14,7 @@
     page = Home;
     currentRoute = ctx.pathname;
   });
+
   router('/about', (ctx) => {
     page = About;
     currentRoute = ctx.pathname;
@@ -24,12 +25,12 @@
 </script>
 
 <main>
-  <img src={logo} alt="Svelte Logo" />
   <Header active={currentRoute} />
   <svelte:component this={page} {params} />
 </main>
 
 <style global lang="postcss">
+  @import './global.css';
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
