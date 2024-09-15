@@ -7,4 +7,16 @@ router.get("/", (req, res) => {
     stickController.getAllSticks(req, res);
 })
 
+router.get("/:id", (req, res) => {
+    stickController.getStickById(req, res);
+})
+
+router.post("/", (req, res) => {
+    stickController.createStick(req, res);
+})
+
+router.patch("/:id", (req, res) => {
+    stickController.updateStick(req, res);
+})
+
 export default router;

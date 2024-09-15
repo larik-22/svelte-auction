@@ -12,4 +12,49 @@ Accept: application/json
         client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
     });
 %}
-###
+
+### GET stick by id and ensure it's json content. Ensure json has only one item.
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+
+    // TODO: check later
+    client.test("Response has only one item", function () {
+        const body = JSON.parse(response.body);
+        client.assert(body.length === 1, "Response has more than one item");
+    });
+%}
+
+### GET Invalid stick by id and ensure 404 status
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/100
+Accept: application/json
+
+> {%
+    client.test("404 status confirmed", function () {
+        client.assert(response.status === 404, "Response status is not 404");
+    });
+%}
+
+### GET bids for stick by id, ensure it's json content.
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1/bids
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+%}
