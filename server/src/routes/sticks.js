@@ -19,4 +19,8 @@ router.patch("/:id", (req, res) => {
     stickController.updateStick(req, res);
 })
 
+router.delete("/:id", (req, res) => {
+    stickController.deleteStick(req, res);
+})
+
 export default router;

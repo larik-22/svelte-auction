@@ -23,7 +23,7 @@ export class Stick {
         this.description = description;
         this.estimatedPrice = estimatedPrice;
 
-        // Image checking
+        // Image checking: if no image is provided, set a placeholder image
         if (isBlank(image)) {
             console.log("Image is blank")
             this.image = "https://cdn.prod.website-files.com/668fe0172c60fac7e678ba19/668fe0172c60fac7e678bae4_placeholder.svg"
@@ -60,18 +60,21 @@ export function validateStaticStickProperties(name, description, estimatedPrice)
         throw new Error('Invalid estimatedPrice: must be a number.');
     }
 
+    if(estimatedPrice < 0) throw new Error('Invalid estimatedPrice: must be a positive number.');
+
     // length checking
     for (let property of [name, description]) {
         if (isBlank(property)) {
-            throw new Error('Invalid property: must not be blank.');
+            // log which property is blank
+            throw new Error(`Invalid ${property === name ? 'name' : 'description'}: must not be blank.`);
         }
     }
 }
 
-export function validateDynamicProperties(length, feature, typeOfTree, weight){
+export function validateDynamicProperties(length, feature, typeOfTree, weight) {
     const possibleLength = ['short', 'medium', 'long'];
     const possibleFeatures = ['straight', 'curved', 'knotty', 'special'];
-    const possibleTypeOfTree = ['oak', 'maple', 'pine', 'bamboo', 'cherry', 'birch', 'mahogany'];
+    const possibleTypeOfTree = ['oak', 'maple', 'pine', 'bamboo', 'cherry', 'other'];
     const possibleWeight = ['light', 'medium', 'heavy'];
 
     for (let property of [length, feature, typeOfTree, weight]) {
@@ -97,13 +100,13 @@ export function validateDynamicProperties(length, feature, typeOfTree, weight){
     }
 }
 
-export function validateStickDate(endDate){
-    try {
-        const date = new Date(endDate);
-        if (date < new Date()) {
-            throw new Error('Invalid date: impossible to make auction in past.');
-        }
-    } catch (e) {
+export function validateStickDate(endDate) {
+    const date = new Date(endDate);
+    if (isNaN(date.getTime())) {
         throw new Error('Invalid date: must be a valid date.');
+    }
+
+    if (date < new Date()) {
+        throw new Error('Invalid date: must be a future date.');
     }
 }

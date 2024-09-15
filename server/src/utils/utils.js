@@ -7,3 +7,24 @@
 export function isBlank(str) {
     return !str || /^\s*$/.test(str);
 }
+
+/**
+ * Returns array of items with id, which is private property of class.
+ * @param data
+ * @returns {{}}
+ */
+export function getItemsWithId(data){
+    if(data[0].id === undefined){
+        throw new Error("Data does not have an id property.");
+    }
+
+    let items = [];
+
+    data.forEach(item => {
+        let modifiedItem = {...item};
+        modifiedItem.id = item.id;
+        items.push(modifiedItem);
+    });
+
+    return items;
+}
