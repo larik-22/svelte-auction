@@ -13,8 +13,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Create a new router for all routes,
-// this will ensure /api is prepended to all routes without manually typing it out
+/**
+ * Create a new router for all routes, this will ensure /api
+ * is prepended to all routes without manually typing it out
+ **/
 const apiRouter = express.Router();
 
 apiRouter.use("/auth", auth);

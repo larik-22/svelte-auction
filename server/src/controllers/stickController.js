@@ -2,32 +2,36 @@ import {data} from "../data/data.js";
 import * as utils from "../utils/utils.js";
 import {Stick, validateDynamicProperties, validateStaticStickProperties, validateStickDate} from "../model/Stick.js";
 
-const findStick = (id) => data.sticks.find(stick => stick.id === id);
 
 export const getAllSticks = (req, res) => {
-    // gets sticks, but also sends an id for each stick to use in the frontend;
-    res.json(utils.getItemsWithId(data.sticks));
+    if(data.sticks.length === 0){
+        res.status(404).send("No sticks found.");
+        return;
+    }
+
+    res.status(200).json(utils.getItemsWithId(data.sticks));
 }
 
 export const getStickById = (req, res) => {
     const id = parseInt(req.params.id);
-    const stick = findStick(req.params.id);
 
-    if (stick) {
-        res.json(stick);
-    } else {
-        res.status(404).send(`Stick with id ${id} was not found.`);
+    try {
+        const stick = utils.findItemById("sticks", id);
+        res.json(utils.getItemsWithId([stick])[0]);
+    } catch (error) {
+        res.status(404).json({error: `${error.message}`});
     }
 }
 
+//201 returned
 export const createStick = (req, res) => {
     const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate} = req.body;
 
     try {
-        const stick = new Stick(data.sticks.length + 1, name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate);
+        const stick = new Stick(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate);
         data.sticks.push(stick);
 
-        res.status(201).json({message: `New stick with id ${data.sticks.length} created successfully`, stick});
+        res.status(201).json({message: `New stick with id ${stick.id} created successfully`, stick});
     } catch (error) {
         res.status(400).json({error: `${error.message}`});
     }
@@ -35,9 +39,9 @@ export const createStick = (req, res) => {
 
 export const updateStick = (req, res) => {
     const id = parseInt(req.params.id);
-    const stick = findStick(id);
 
-    if (stick) {
+    try {
+        const stick = utils.findItemById("sticks", id);
         const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate} = req.body;
 
         // validate properties first
@@ -59,21 +63,22 @@ export const updateStick = (req, res) => {
         stick.weight = weight || stick.weight;
         stick.endDate = endDate || stick.endDate;
 
-        res.status(200).json({message: `Stick with id ${id} updated successfully`, stick});
-    } else {
-        res.status(404).send(`Stick with id ${id} was not found.`);
+        res.status(200).json({message: `Stick with id ${stick.id} updated successfully`, stick});
+    } catch (error) {
+        res.status(404).json({error: `${error.message}`});
     }
+
 }
 
 export const deleteStick = (req, res) => {
     const id = parseInt(req.params.id);
-    const stick = findStick(id);
 
-    if (stick) {
-        data.sticks = data.sticks.filter(stick => stick.id !== parseInt(req.params.id));
-        res.status(200).json({message: `Stick with id ${req.params.id} deleted successfully`});
-    } else {
-        res.status(404).send(`Stick with id ${id} was not found.`);
+    try {
+        const stick = utils.findItemById("sticks", id);
+        data.sticks = data.sticks.filter(item => item.id !== stick.id);
+        res.status(200).json({message: `Stick with id ${id} deleted successfully`});
+    } catch (error) {
+        res.status(404).json({error: `${error.message}`});
     }
 }
 

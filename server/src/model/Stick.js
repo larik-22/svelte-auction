@@ -1,6 +1,8 @@
 import {isBlank} from "../utils/utils.js";
 
 export class Stick {
+    static #idCounter = 0;
+
     #id;
     name;
     description;
@@ -12,11 +14,8 @@ export class Stick {
     weight;
     endDate;
 
-    constructor(id, name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate) {
-        if (!id || typeof id !== 'number') {
-            throw new Error('Invalid id: must be a number.');
-        }
-        this.#id = id;
+    constructor(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate) {
+        this.#id = ++Stick.#idCounter;
 
         validateStaticStickProperties(name, description, estimatedPrice);
         this.name = name;
@@ -43,6 +42,10 @@ export class Stick {
 
     get id() {
         return this.#id;
+    }
+
+    get idCounter() {
+        return Stick.#idCounter;
     }
 }
 
@@ -84,19 +87,19 @@ export function validateDynamicProperties(length, feature, typeOfTree, weight) {
     }
 
     if (!possibleLength.includes(length.toLowerCase())) {
-        throw new Error('Invalid length: must be short, medium or long.');
+        throw new Error('Invalid length: must be ' + possibleLength.join(", ") + '.');
     }
 
     if (!possibleFeatures.includes(feature.toLowerCase())) {
-        throw new Error('Invalid feature: must be light, medium or heavy.');
+        throw new Error('Invalid feature: must be ' + possibleFeatures.join(", ") + '.');
     }
 
     if (!possibleTypeOfTree.includes(typeOfTree.toLowerCase())) {
-        throw new Error('Invalid typeOfTree: must be oak, maple, pine, bamboo, cherry, birch or mahogany.');
+        throw new Error('Invalid typeOfTree: must be ' + possibleTypeOfTree.join(", ") + '.');
     }
 
     if (!possibleWeight.includes(weight.toLowerCase())) {
-        throw new Error('Invalid weight: must be light, medium or heavy.');
+        throw new Error('Invalid weight: must be ' + possibleWeight.join(", ") + '.');
     }
 }
 

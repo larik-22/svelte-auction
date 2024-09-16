@@ -1,10 +1,12 @@
+import {data} from "../data/data.js";
+
 /**
  * Check if a string is blank.
  * Used regular expression to check if a string is blank.
  * @param str - The string to check.
  * @returns {boolean|boolean} - True if the string is blank, false otherwise.
  */
-export function isBlank(str) {
+export const isBlank = (str) => {
     return !str || /^\s*$/.test(str);
 }
 
@@ -13,8 +15,8 @@ export function isBlank(str) {
  * @param data
  * @returns {{}}
  */
-export function getItemsWithId(data){
-    if(data[0].id === undefined){
+export const getItemsWithId = (data) => {
+    if (data[0].id === undefined) {
         throw new Error("Data does not have an id property.");
     }
 
@@ -27,4 +29,22 @@ export function getItemsWithId(data){
     });
 
     return items;
+}
+
+/**
+ * Find item by id.
+ * @param dataType - The type of data (stick / user / bid).
+ * @param id - The id of the item to find.
+ */
+export const findItemById = (dataType, id) => {
+    if (isNaN(id)) {
+        throw new Error(`Id must be a number`);
+    }
+
+    const foundItem = data[dataType].find(item => item.id === id);
+    if (!foundItem) {
+        throw new Error(`${dataType} with id ${id} not found`);
+    }
+
+    return foundItem;
 }
