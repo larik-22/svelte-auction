@@ -1,5 +1,7 @@
 import express from "express";
 import * as stickController from "../controllers/stickController.js";
+import {isLoggedIn} from "../middleware/isLoggedIn.js";
+import {isAdmin} from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
@@ -11,7 +13,7 @@ router.get("/:id", (req, res) => {
     stickController.getStickById(req, res);
 })
 
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn, isAdmin, (req, res) => {
     stickController.createStick(req, res);
 })
 

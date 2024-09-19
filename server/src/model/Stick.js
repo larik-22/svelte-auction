@@ -12,10 +12,13 @@ export class Stick {
     feature;
     typeOfTree;
     weight;
+    startDate;
     endDate;
+    bids;
 
-    constructor(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate) {
+    constructor(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate) {
         this.#id = ++Stick.#idCounter;
+        this.bids = [];
 
         validateStaticStickProperties(name, description, estimatedPrice);
         this.name = name;
@@ -24,7 +27,6 @@ export class Stick {
 
         // Image checking: if no image is provided, set a placeholder image
         if (isBlank(image)) {
-            console.log("Image is blank")
             this.image = "https://cdn.prod.website-files.com/668fe0172c60fac7e678ba19/668fe0172c60fac7e678bae4_placeholder.svg"
         } else {
             this.image = image;
@@ -36,8 +38,9 @@ export class Stick {
         this.typeOfTree = typeOfTree;
         this.weight = weight;
 
-        validateStickDate(endDate);
-        this.endDate = endDate;
+        validateStickDate(startDate, endDate);
+        this.startDate = startDate === null || startDate === undefined ? new Date() : new Date(startDate);
+        this.endDate = new Date(endDate);
     }
 
     get id() {
@@ -103,13 +106,30 @@ export function validateDynamicProperties(length, feature, typeOfTree, weight) {
     }
 }
 
-export function validateStickDate(endDate) {
-    const date = new Date(endDate);
-    if (isNaN(date.getTime())) {
-        throw new Error('Invalid date: must be a valid date.');
+export function validateStickDate(startDateStr, endDateStr) {
+    // check if startDate is a valid date
+    const startDate = new Date(startDateStr === null || startDateStr === undefined ? new Date() : startDateStr);
+
+    if (isNaN(startDate.getTime())) {
+        throw new Error('Invalid start date: must be a valid date.');
     }
 
-    if (date < new Date()) {
-        throw new Error('Invalid date: must be a future date.');
+    if (startDate < new Date()) {
+        throw new Error('Invalid start date: must be a future date.');
+    }
+
+    // check if endDate is a valid date
+    const endDate = new Date(endDateStr);
+    if (isNaN(endDate.getTime())) {
+        throw new Error('Invalid end date: must be a valid date.');
+    }
+
+    if (endDate < new Date()) {
+        throw new Error('Invalid end date: must be a future date.');
+    }
+
+    // check if endDate is after startDate
+    if (endDate < startDate) {
+        throw new Error('Invalid end date: endDate must be after startDate.');
     }
 }

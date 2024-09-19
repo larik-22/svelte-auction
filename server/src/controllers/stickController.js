@@ -2,10 +2,9 @@ import {data} from "../data/data.js";
 import * as utils from "../utils/utils.js";
 import {Stick, validateDynamicProperties, validateStaticStickProperties, validateStickDate} from "../model/Stick.js";
 
-
 export const getAllSticks = (req, res) => {
     if(data.sticks.length === 0){
-        res.status(404).send("No sticks found.");
+        res.status(200).json(data.sticks)
         return;
     }
 
@@ -25,10 +24,10 @@ export const getStickById = (req, res) => {
 
 //201 returned
 export const createStick = (req, res) => {
-    const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate} = req.body;
+    const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = req.body;
 
     try {
-        const stick = new Stick(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate);
+        const stick = new Stick(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate);
         data.sticks.push(stick);
 
         res.status(201).json({message: `New stick with id ${stick.id} created successfully`, stick});
@@ -42,7 +41,8 @@ export const updateStick = (req, res) => {
 
     try {
         const stick = utils.findItemById("sticks", id);
-        const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, endDate} = req.body;
+        const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = req.body;
+        const properties = {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate};
 
         // validate properties first
         try {
@@ -53,15 +53,11 @@ export const updateStick = (req, res) => {
         }
 
         // set properties if they are not undefined
-        stick.name = name || stick.name;
-        stick.description = description || stick.description;
-        stick.image = image || stick.image;
-        stick.estimatedPrice = estimatedPrice || stick.estimatedPrice;
-        stick.length = length || stick.length;
-        stick.feature = feature || stick.feature;
-        stick.typeOfTree = typeOfTree || stick.typeOfTree;
-        stick.weight = weight || stick.weight;
-        stick.endDate = endDate || stick.endDate;
+        for (const [key, value] of Object.entries(properties)) {
+            if (value !== undefined) {
+                stick[key] = value;
+            }
+        }
 
         res.status(200).json({message: `Stick with id ${stick.id} updated successfully`, stick});
     } catch (error) {
@@ -76,6 +72,7 @@ export const deleteStick = (req, res) => {
     try {
         const stick = utils.findItemById("sticks", id);
         data.sticks = data.sticks.filter(item => item.id !== stick.id);
+
         res.status(200).json({message: `Stick with id ${id} deleted successfully`});
     } catch (error) {
         res.status(404).json({error: `${error.message}`});
@@ -88,7 +85,7 @@ export const deleteStick = (req, res) => {
  * @param newStick new stick object formed of passed body parameters
  */
 const validateStickOnUpdate = (oldStick, newStick) => {
-    const {name, description, estimatedPrice, length, feature, typeOfTree, weight, endDate} = newStick;
+    const {name, description, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = newStick;
 
     // Validate static properties if they are present
     if (name !== undefined) validateStaticStickProperties(name, oldStick.description, oldStick.estimatedPrice);
@@ -102,5 +99,6 @@ const validateStickOnUpdate = (oldStick, newStick) => {
     if (weight !== undefined) validateDynamicProperties(oldStick.length, oldStick.feature, oldStick.typeOfTree, weight);
 
     // Validate endDate if it is present
-    if (endDate !== undefined) validateStickDate(endDate);
+    if (startDate !== undefined) validateStickDate(startDate, oldStick.endDate);
+    if (endDate !== undefined) validateStickDate(oldStick.startDate, endDate);
 }
