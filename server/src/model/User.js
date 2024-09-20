@@ -60,6 +60,12 @@ export function validateUserPassword(password) {
     // }
 }
 
+/**
+ * Check if the password is correct
+ * @param password password to check
+ * @param hashedPassword hashed password to compare with
+ * @returns {boolean} true if the password is correct, false otherwise
+ */
 export function checkUserPassword(password, hashedPassword) {
     return bcrypt.compareSync(password, hashedPassword);
 }

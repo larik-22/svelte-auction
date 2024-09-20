@@ -1,12 +1,25 @@
 import express from 'express';
+import {getUserByEmail} from "../controllers/userController.js";
+import {checkUserPassword} from "../model/User.js";
+import {generateToken} from "../utils/jwt.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    // @todo check the credentials and return an appropriate response
-    // For testing purposes a dummy token is returned.
-    res.json({
-        "token": "dummyt0k3nv4lu3!"
-    })
+    const {email, password} = req.body;
+    const user = getUserByEmail(email);
+
+    if(!user){
+        res.status(401).json({error: `User with email ${email} not found`});
+        return;
+    }
+
+    if(!checkUserPassword(password, user.password)){
+        res.status(401).json({error: `Invalid password`});
+        return;
+    }
+
+    const token = generateToken(user);
+    res.status(200).json({message: "Login successful", token});
 });
 
 export default router;

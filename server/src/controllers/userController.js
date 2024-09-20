@@ -1,6 +1,11 @@
 import {data} from "../data/data.js";
 import * as utils from "../utils/utils.js";
 import {User} from "../model/User.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import {generateToken} from "../utils/jwt.js";
+
+dotenv.config();
 
 /**
  * Returns array of users with email, id and isAdmin properties.
@@ -16,6 +21,14 @@ const getFormattedUsers = (users) => {
             isAdmin: user.isAdmin
         }
     })
+}
+
+/**
+ * Finds user by given email.
+ * @param email - The email of the user.
+ */
+export const getUserByEmail = (email) => {
+    return data.users.find(user => user.email === email);
 }
 
 export const getAllUsers = (req, res) => {
@@ -40,12 +53,18 @@ export const getUserById = (req, res) => {
 
 export const createUser = (req, res) => {
     const {email, password} = req.body;
+    // check if user with email already exists
+    if(getUserByEmail(email)){
+        res.status(409).json({error: `User with email ${email} already exists`});
+        return;
+    }
 
     try {
         const user = new User(email, password);
         data.users.push(user);
 
-        res.status(201).json({message: `New user with id ${user.id} created successfully`});
+        const token = generateToken(user);
+        res.status(201).json({message: `New user with id ${user.id} created successfully`, token});
     } catch (error) {
         res.status(400).json({error: `${error.message}`});
     }
