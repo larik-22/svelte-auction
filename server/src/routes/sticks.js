@@ -13,15 +13,19 @@ router.get("/:id", (req, res) => {
     stickController.getStickById(req, res);
 })
 
+router.get("/:id/bids", (req, res) => {
+    stickController.getStickBids(req, res);
+})
+
 router.post("/", isLoggedIn, isAdmin, (req, res) => {
     stickController.createStick(req, res);
 })
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id", isLoggedIn, isAdmin, (req, res) => {
     stickController.updateStick(req, res);
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isLoggedIn, isAdmin, (req, res) => {
     stickController.deleteStick(req, res);
 })
 

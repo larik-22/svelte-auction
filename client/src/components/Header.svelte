@@ -8,26 +8,25 @@
     $: isAdmin = loggedIn && isUserAdmin();
 </script>
 
-<nav class="container flex justify-between gap-4 py-4">
-    <h2>Logo goes here</h2>
-    <ul class="flex items-center gap-4">
-        <li><a class:active={active === "/"} href="/">Home</a></li>
-        <li><a class:active={active === "/about"} href="/about">About</a></li>
-        {#if !loggedIn}
-            <li>
-                <a class:active={active === "/register"} href="/register">Sign up</a>
-                <a class:active={active === "/login"} href="/login">Sign in</a>
-            </li>
-
+<nav class="container flex justify-between items-center align-middle gap-4 py-4 border-b-2">
+    <a href="/" class="text-2xl font-bold">StickNation</a>
+    <div class="flex gap-8 items-center">
+        <a href="/" class:active={active === '/'}>Home</a>
+        {#if loggedIn}
+            {#if isAdmin}
+                <a href="/dashboard" class="py-2 px-4 bg-blue-800 text-white rounded border-2 border-blue-800" class:active={active === '/dashboard'}>Dashboard</a>
+            {/if}
+        {:else}
+            <div class="flex items-center gap-2">
+                <a href="/login" class="py-2 px-4 border-2 border-blue-800 text-blue-800 rounded" class:active={active === '/login'}>Login</a>
+                <a href="/register" class="py-2 px-4 bg-blue-800 text-white rounded border-2 border-blue-800" class:active={active === '/register'}>Register</a>
+            </div>
         {/if}
-        {#if isAdmin}
-            <li><a class:active={active === "/admin"} href="/admin">Admin</a></li>
-        {/if}
-    </ul>
+    </div>
 </nav>
 
 <style>
     .active {
-        @apply text-blue-500;
+        @apply font-medium;
     }
 </style>

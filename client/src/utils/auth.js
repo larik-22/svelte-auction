@@ -8,6 +8,7 @@ import page from "page";
  * Handles the registration response by setting the token
  * @param response - the response from the server
  */
+//TODO: probably move to svelte component
 export const handleRegistrationResponse = async (response) => {
     //get response code
     const responseCode = response.status;
@@ -29,6 +30,7 @@ export const handleRegistrationResponse = async (response) => {
  * in the local storage and updating the authToken store
  * @param response - the response from the server
  */
+//TODO: probably move to svelte component
 export const handleLoginResponse = async (response) => {
     const responseCode = response.status;
     const data = await response.json();

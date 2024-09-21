@@ -2,10 +2,14 @@
     import {handleLoginResponse, handleRegistrationResponse} from "../utils/auth.js";
     import page from "page";
 
+    /*
+    TODO: Add validation, error handling, and if registration unsuccessful remove token
+ */
+
     let email = "";
     let password = "";
 
-    const register = async () => {
+    const login = async () => {
         const response = await fetch("http://localhost:3000/api/auth", {
             method: "POST",
             headers: {
@@ -19,7 +23,7 @@
 
         try {
             await handleLoginResponse(response)
-        } catch (error){
+        } catch (error) {
             //error handling
             console.log(error)
         }
@@ -27,11 +31,26 @@
 
 </script>
 
-<main class="flex flex-col max-w-4xl gap-4 m-auto">
-    <h1>Login</h1>
-    <label for="email">Email</label>
-    <input type="email" class="border" required bind:value={email}>
-    <label for="password">Password</label>
-    <input type="text" class="border" required bind:value={password}>
-    <button type="submit" class="border" on:click={register}>Register</button>
+
+<main class="min-h-[600px] flex flex-col justify-center items-center">
+    <div class="flex flex-col max-w-4xl gap-6 m-auto p-8 bg-white shadow-lg rounded-lg w-full max-w-md">
+        <h1 class="text-2xl font-medium mb-2 text-center">Login to your account</h1>
+        <div class="flex flex-col gap-1">
+            <label for="email" class="text-base font-medium">Email</label>
+            <input type="email" placeholder="Enter your email"
+                   class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required bind:value={email}>
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="password" class="text-base font-medium">Password</label>
+            <input type="password" placeholder="Enter your password"
+                   class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required bind:value={password}>
+        </div>
+        <button type="submit"
+                class="mt-6 py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                on:click={login}>
+            Login
+        </button>
+    </div>
 </main>
