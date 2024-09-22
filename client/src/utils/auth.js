@@ -4,47 +4,20 @@ import {jwtDecode} from "jwt-decode";
 import {get} from "svelte/store";
 import page from "page";
 
-/**
- * Handles the registration response by setting the token
- * @param response - the response from the server
- */
-//TODO: probably move to svelte component
-export const handleRegistrationResponse = async (response) => {
-    //get response code
+export const handleAuthResponse = async (response, code) => {
     const responseCode = response.status;
     const data = await response.json();
 
-    if(responseCode !== 201){
+    if (responseCode !== code) {
         throw new Error(data.error);
     }
 
-    const { token } = data;
+    const {token} = data;
     authToken.set(token);
     localStorage.setItem('token', token);
 
     page.redirect('/');
-};
-
-/**
- * Handles the login response by setting the token
- * in the local storage and updating the authToken store
- * @param response - the response from the server
- */
-//TODO: probably move to svelte component
-export const handleLoginResponse = async (response) => {
-    const responseCode = response.status;
-    const data = await response.json();
-
-    if(responseCode !== 200){
-        throw new Error(data.error);
-    }
-
-    const { token } = data;
-    authToken.set(token);
-    localStorage.setItem('token', token);
-
-    page.redirect('/');
-};
+}
 
 /**
  * Decodes the jwt token and check if the user is an admin
@@ -58,6 +31,15 @@ export const isUserAdmin = () => {
 
     const decodedToken = jwtDecode(token);
     return decodedToken.isAdmin;
+};
+
+export const handleAuthError = (error) => {
+    if (error.status === 401 || error.status === 403) {
+        // Clear the token and redirect to login page
+        authToken.set(null);
+        localStorage.removeItem('token');
+        page.redirect('/login');
+    }
 };
 
 /**

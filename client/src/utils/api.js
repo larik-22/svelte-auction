@@ -1,20 +1,26 @@
 import {BASE_BACKEND_URL} from "../config.js";
+import {handleAuthError} from "./auth.js";
 
-export const fetchWithAuth = (url, options = {}) => {
+export const fetchWithAuth = async (url, options = {}) => {
     const token = localStorage.getItem('token');
 
-    // Merge any headers provided in options with the Authorization header
     const headers = {
         ...options.headers,
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
     };
 
-    // Pass the method, body, headers, etc. as options to fetch
-    return fetch(url, {
+    const response = await fetch(url, {
         ...options,
-        headers
+        headers: headers
     });
+
+    if (!response.ok) {
+        handleAuthError(response);
+        throw new Error('Failed to fetch');
+    }
+
+    return response.json();
 };
 
 /**

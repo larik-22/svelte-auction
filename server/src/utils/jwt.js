@@ -16,3 +16,21 @@ export const generateToken = (user) => {
 
     return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
 }
+
+export const verifyToken = (req) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        throw new Error('Authorization header missing or malformed');
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        throw new Error('Invalid token');
+    }
+};

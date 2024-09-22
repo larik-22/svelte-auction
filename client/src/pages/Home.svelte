@@ -2,10 +2,11 @@
     import Button from "../components/Button.svelte";
     import Loading from "../components/Loading.svelte";
     import {onMount} from "svelte";
-    import {getApiData} from "../utils/api.js";
+    import {fetchWithAuth, getApiData} from "../utils/api.js";
     import List from "../components/List.svelte";
     import SearchBar from "../components/SearchBar.svelte";
     import Filters from "../components/Filters.svelte";
+    import { BASE_BACKEND_URL } from "../config.js";
 
     /**
      * TODO: Implement the following:
@@ -28,6 +29,7 @@
             return data;
         });
     });
+
 </script>
 
 <main class="container flex py-8 gap-4">
