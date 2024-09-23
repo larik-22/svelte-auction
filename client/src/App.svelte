@@ -7,10 +7,10 @@
   import Header from "./components/Header.svelte";
   import Register from "./pages/Register.svelte";
   import Login from "./pages/Login.svelte";
-  import TestAdminPage from "./pages/TestAdminPage.svelte";
   import {isLoggedIn} from "./middleware/isLoggedIn.js";
   import {isAdmin} from "./middleware/isAdmin.js";
   import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
+  import Dashboard from "./pages/Dashboard.svelte";
 
   let page;
   let params;
@@ -33,14 +33,14 @@
     params = ctx;
   });
 
-  router('/login',isNotLoggedIn, (ctx) => {
+  router('/login', isNotLoggedIn, (ctx) => {
     page = Login;
     currentRoute = ctx.pathname;
     params = ctx;
   });
 
-  router('/protected', isLoggedIn, isAdmin, (ctx) => {
-    page = TestAdminPage;
+  router('/dashboard', isLoggedIn, isAdmin, (ctx) => {
+    page = Dashboard;
     currentRoute = ctx.pathname;
     params = ctx;
   });

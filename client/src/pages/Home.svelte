@@ -20,15 +20,15 @@
     let filters = {};
     let loadingPromise;
 
-    onMount(() => {
+    $: (async () => {
         const fetchPromise = getApiData("sticks", filters);
-        const delayPromise = new Promise(resolve => setTimeout(resolve, 300 ));
+        const delayPromise = new Promise(resolve => setTimeout(resolve, 300));
 
         loadingPromise = Promise.all([fetchPromise, delayPromise]).then(([data]) => {
             stickData = data;
             return data;
         });
-    });
+    })();
 
 </script>
 
@@ -52,6 +52,13 @@
             <div>
                 {#if stickData.length > 0}
                     <List items={stickData}/>
+                    <button on:click={async () => {
+                        let response = await fetchWithAuth(`${BASE_BACKEND_URL}/sticks/${stickData[0].id}`, {
+                            method: "DELETE"
+                        });
+
+                        stickData = stickData.slice(1);
+                    }}>Delete first item</button>
                 {:else}
                     <div class="w-full p-10 flex flex-col justify-center items-center">
                         <p class="text-2xl">No auctions available...</p>

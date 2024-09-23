@@ -7,19 +7,23 @@ export const getAllSticks = (req, res) => {
         res.status(200).json(data.sticks)
         return;
     }
-    //pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 3
-    const skip = (page - 1) * limit;
 
-    try {
-        const sticks = data.sticks.slice(skip, skip + limit);
-        res.status(200).json(utils.getItemsWithId(sticks));
-    } catch (error) {
-        res.status(404).json({error: `${error.message}`});
-    }
+    // //pagination
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 3
+    // const skip = (page - 1) * limit;
+    //
+    // try {
+    //     const sticks = data.sticks.slice(skip, skip + limit);
+    //     res.status(200).json(utils.getItemsWithId(sticks));
+    // } catch (error) {
+    //     res.status(404).json({error: `${error.message}`});
+    // }
 
-    // res.status(200).json(utils.getItemsWithId(data.sticks));
+    //account for query parameters, loop through the query parameters and filter the sticks
+    //if the query parameter is not found, return all sticks
+
+    res.status(200).json(utils.getItemsWithId(data.sticks));
 }
 
 export const getStickById = (req, res) => {
@@ -43,7 +47,6 @@ export function getStickBids(req, res) {
         res.status(404).json({error: `${error.message}`});
     }
 }
-
 //201 returned
 export const createStick = (req, res) => {
     const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = req.body;

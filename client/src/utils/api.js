@@ -20,7 +20,7 @@ export const fetchWithAuth = async (url, options = {}) => {
         throw new Error('Failed to fetch');
     }
 
-    return response.json();
+    return await response.json();
 };
 
 /**
