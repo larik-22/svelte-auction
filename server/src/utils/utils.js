@@ -1,4 +1,5 @@
 import {data} from "../data/data.js";
+import {Stick} from "../model/Stick.js";
 
 /**
  * Check if a string is blank.
@@ -16,12 +17,15 @@ export const isBlank = (str) => {
  * @returns {{}}
  */
 export const getItemsWithId = (data) => {
+    if (!data || data.length === 0) {
+        return [];
+    }
+
     if (data[0].id === undefined) {
         throw new Error("Data does not have an id property.");
     }
 
     let items = [];
-
     data.forEach(item => {
         let modifiedItem = {...item};
         modifiedItem.id = item.id;

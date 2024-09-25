@@ -26,7 +26,6 @@ export class User {
     }
 }
 
-// TODO: also validate if email is not taken by another user
 export function validateUserEmail(email) {
     if (!email || !validator.isEmail(email)) {
         throw new Error('Invalid email: must be a valid email.');

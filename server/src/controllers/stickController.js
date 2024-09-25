@@ -7,23 +7,60 @@ export const getAllSticks = (req, res) => {
         res.status(200).json(data.sticks)
         return;
     }
+    const filters = req.query;
+    const filteredSticks = filterSticks(data.sticks, filters);
 
-    // //pagination
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || 3
-    // const skip = (page - 1) * limit;
-    //
-    // try {
-    //     const sticks = data.sticks.slice(skip, skip + limit);
-    //     res.status(200).json(utils.getItemsWithId(sticks));
-    // } catch (error) {
-    //     res.status(404).json({error: `${error.message}`});
-    // }
+    res.status(200).json(utils.getItemsWithId(filteredSticks));
+}
 
-    //account for query parameters, loop through the query parameters and filter the sticks
-    //if the query parameter is not found, return all sticks
+const filterSticks = (sticks, filters) => {
+    let filteredSticks = [...sticks];
 
-    res.status(200).json(utils.getItemsWithId(data.sticks));
+    if (filters.name) {
+        filteredSticks = filteredSticks.filter(stick => stick.name.toLowerCase().includes(filters.name.toLowerCase()));
+    }
+
+    if (filters.feature) {
+        filteredSticks = filterByProperty(filteredSticks, filters, "feature");
+    }
+
+    if (filters.length){
+        filteredSticks = filterByProperty(filteredSticks, filters, "length");
+    }
+
+    if (filters.weight){
+        filteredSticks = filterByProperty(filteredSticks, filters, "weight");
+    }
+
+    if (filters.typeOfTree) {
+        filteredSticks = filterByProperty(filteredSticks, filters, "typeOfTree");
+    }
+
+    return filteredSticks;
+}
+
+/**
+ * Filters array by given property out of query parameter.
+ * Since it could be either string or array, it checks for both cases.
+ * @param items array of items to be filtered
+ * @param filters query parameters
+ * @param property property to filter by
+ * @returns {*}
+ */
+const filterByProperty = (items, filters, property) => {
+    return items.filter(item => {
+        const filterValue = filters[property];
+
+        if (Array.isArray(filterValue)) {
+            return filterValue.find(value =>
+                item[property]?.toLowerCase().includes(value.toLowerCase())
+            );
+        } else if (typeof filterValue === 'string') {
+            return item[property]?.toLowerCase().includes(filterValue.toLowerCase());
+        }
+
+        return true;
+    });
 }
 
 export const getStickById = (req, res) => {

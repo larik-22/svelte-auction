@@ -1,12 +1,12 @@
 <script>
     import Button from "../components/Button.svelte";
     import Loading from "../components/Loading.svelte";
-    import {onMount} from "svelte";
-    import {fetchWithAuth, getApiData} from "../utils/api.js";
+    import {afterUpdate, beforeUpdate, onMount} from "svelte";
+    import {fetchWithAuth, formatQueryParams, getApiData} from "../utils/api.js";
     import List from "../components/List.svelte";
     import SearchBar from "../components/SearchBar.svelte";
     import Filters from "../components/Filters.svelte";
-    import { BASE_BACKEND_URL } from "../config.js";
+    import page from "page";
 
     /**
      * TODO: Implement the following:
@@ -16,64 +16,94 @@
      * 4. Implement the SearchBar component with query parameters or on-the-fly search
      * 5. Implement the List component with the Item component (Probably use cards)
      */
-    let stickData = [];
-    let filters = {};
-    let loadingPromise;
+    export let params;
 
-    $: (async () => {
+    let filters = {
+        length: "",
+        weight: "",
+        feature: "",
+        typeOfTree: ""
+    };
+
+    beforeUpdate(() => {
+        filters = decodeQueryParams(params.querystring);
+    });
+
+    let loadingPromise;
+    afterUpdate(() => {
         const fetchPromise = getApiData("sticks", filters);
         const delayPromise = new Promise(resolve => setTimeout(resolve, 300));
 
         loadingPromise = Promise.all([fetchPromise, delayPromise]).then(([data]) => {
-            stickData = data;
             return data;
         });
-    })();
+    });
 
+    async function filterChange(event) {
+        filters = event.detail;
+        const queryParams = formatQueryParams(filters);
+
+        if (!queryParams) {
+            page(params.pathname)
+        } else {
+            page(`${params.pathname}?${queryParams}`);
+        }
+
+    }
+
+    const decodeQueryParams = (queryString) => {
+        const defaultFilters = {
+            length: "",
+            weight: "",
+            feature: "",
+            typeOfTree: ""
+        };
+
+        if (!queryString) {
+            return defaultFilters;
+        }
+
+        const params = new URLSearchParams(queryString.replace(/\?/g, '&'));
+        const filters = {...defaultFilters};
+
+        for (const [key, value] of params.entries()) {
+            const decodedKey = decodeURIComponent(key);
+            const decodedValue = decodeURIComponent(value);
+
+            if (filters.hasOwnProperty(decodedKey)) {
+                if (filters[decodedKey]) {
+                    filters[decodedKey] += `,${decodedValue}`;
+                } else {
+                    filters[decodedKey] = decodedValue;
+                }
+            }
+        }
+
+        return filters;
+    };
 </script>
 
-<main class="container flex py-8 gap-4">
-    <div class="w-1/4">
-        <Filters />
+<!--since we are already inside <main> tag, sections is better for SEO and generally better practice-->
+<section class="container grid grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12 items-centers py-10">
+    <div class="col-span-1 md:col-span-2 lg:col-span-3">
+        <Filters on:filterChange={filterChange} filters={filters}/>
     </div>
-
-    <div class="w-3/4">
-        <div class="mb-4">
-            <SearchBar/>
-        </div>
-
+    <div class="col-span-1 md:col-span-4 lg:col-span-9">
+        <SearchBar/>
         {#await loadingPromise}
-            <div class="w-full flex flex-col justify-center items-center">
+            <div class="w-full h-full flex flex-col items-center justify-center">
                 <div class="w-40 h-40">
-                    <Loading />
+                    <Loading/>
                 </div>
             </div>
         {:then data}
-            <div>
-                {#if stickData.length > 0}
-                    <List items={stickData}/>
-                    <button on:click={async () => {
-                        let response = await fetchWithAuth(`${BASE_BACKEND_URL}/sticks/${stickData[0].id}`, {
-                            method: "DELETE"
-                        });
-
-                        stickData = stickData.slice(1);
-                    }}>Delete first item</button>
-                {:else}
-                    <div class="w-full p-10 flex flex-col justify-center items-center">
-                        <p class="text-2xl">No auctions available...</p>
-                    </div>
-                {/if}
-            </div>
+            <List items={data}/>
         {:catch error}
-            <div class="w-full p-10 flex flex-col justify-center items-center">
-                <p class="text-2xl">No auctions available...</p>
+            <div class="w-full h-full flex flex-col items-center justify-center text-lg font-semibold">
+                <p>No auctions available... Please try again</p>
+                <p class="text-red-500">{error.message}</p>
             </div>
         {/await}
     </div>
-</main>
+</section>
 
-    <!--[]  Filter block component-->
-    <!--[]  Search bar component-->
-    <!--[]  Item list and item component-->
-    <!--[x]  Also components for buttons-->

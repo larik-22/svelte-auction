@@ -1,5 +1,6 @@
 import {BASE_BACKEND_URL} from "../config.js";
 import {handleAuthError} from "./auth.js";
+import {isBlank} from "./utils.js";
 
 export const fetchWithAuth = async (url, options = {}) => {
     const token = localStorage.getItem('token');
@@ -31,12 +32,29 @@ export const fetchWithAuth = async (url, options = {}) => {
  */
 export const getApiData = async (resource, filters = {}) => {
     try {
-        const queryParams = Object.keys(filters).map(key => `${key}=${filters[key]}`).join('&');
+        // Convert the filters object into a query string (Account for comma separated values)
+        const queryParams = formatQueryParams(filters);
         const response = await fetch(`${BASE_BACKEND_URL}/${resource}` + (queryParams ? `?${queryParams}` : ''));
         return await response.json();
     } catch (error) {
         throw new Error(`Error when fetching ${resource}: ${error}`);
     }
+}
+
+/**
+ * Creates a valid query string from the filters object
+ * @param filters - object of filters to apply to the request
+ * @returns {string} - the query string
+ */
+export const formatQueryParams = (filters) => {
+    //loop through the keys and if the value is not empty, add it to the query string
+    return Object.keys(filters)
+        .filter(key => filters[key] && filters[key].trim() !== "")
+        .map(key => filters[key]
+            .split(',')
+            .map(value => `${key}=${value}`)
+            .join('&'))
+        .join('&');
 }
 
 /**

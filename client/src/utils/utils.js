@@ -12,6 +12,10 @@ export const isBlank = (str) => {
     return !str || /^\s*$/.test(str);
 }
 
+export const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 //TODO: implement the rest of the functions
 export const deleteData = async (data, resource, id) => {
     await deleteApiData(resource, id);

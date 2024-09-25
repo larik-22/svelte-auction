@@ -11,14 +11,16 @@
   import {isAdmin} from "./middleware/isAdmin.js";
   import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
   import Dashboard from "./pages/Dashboard.svelte";
+  import HomeProper from "./pages/Home.svelte";
 
   let page;
   let params;
   let currentRoute;
 
   router('/', (ctx) => {
-    page = Home;
+    page = HomeProper;
     currentRoute = ctx.pathname;
+    params = ctx;
   });
 
   router('/about', isLoggedIn, (ctx) => {

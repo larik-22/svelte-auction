@@ -13,7 +13,8 @@
         position: absolute;
         width: 50%;
         height: 50%;
-        border: 5px solid #002663;
+        border: 5px solid;
+        @apply border-blue-600;
         border-top-color: transparent;
         border-radius: 50%;
         top: 50%;

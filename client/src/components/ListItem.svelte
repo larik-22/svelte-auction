@@ -3,22 +3,16 @@
     import page from "page";
 
     export let item = {};
-
 </script>
-<div>
-    <div class="flex items-center justify-between p-4 border-b">
-        <div class="flex items-center">
-            <img src={item.image} alt={item.name} class="w-20 h-20 rounded-lg object-cover"/>
-            <div class="ml-4">
-                <p class="text-lg font-semibold">{item.name}</p>
-                <p class="text-sm text-gray-500">{item.description}</p>
-            </div>
-        </div>
-        <div class="flex items-center">
-            <p class="text-lg font-semibold">${item.estimatedPrice}</p>
-            <Button variant="primary">
-                Join
-            </Button>
-        </div>
+<div class="p-4 shadow-md rounded-md flex flex-col items-start justify-items-start flex-grow gap-2">
+    <img src={item.image} alt={item.name} class="w-full h-48 object-cover rounded"/>
+    <div class="flex flex-col items-start gap-1 pb-4">
+        <h2 class="text-xl font-medium">{item.name}</h2>
+        <p class="text- text-gray-400">{item.description}</p>
+    </div>
+    <div class="mt-auto">
+        <Button variant="secondary" on:click={() => {
+            page(`/stick/${item.id}`)
+        }}>View Details</Button>
     </div>
 </div>
