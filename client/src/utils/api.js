@@ -3,7 +3,7 @@ import {handleAuthError} from "./auth.js";
 import {isBlank} from "./utils.js";
 
 export const fetchWithAuth = async (url, options = {}) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || '';
 
     const headers = {
         ...options.headers,
@@ -23,7 +23,6 @@ export const fetchWithAuth = async (url, options = {}) => {
 
     return await response.json();
 };
-
 /**
  * Extracts id parameter from the URL
  * @param resource - the resource to post the entry to
@@ -34,9 +33,10 @@ export const getApiData = async (resource, filters = {}) => {
     try {
         // Convert the filters object into a query string (Account for comma separated values)
         const queryParams = formatQueryParams(filters);
-        const response = await fetch(`${BASE_BACKEND_URL}/${resource}` + (queryParams ? `?${queryParams}` : ''));
-        return await response.json();
+
+        return await fetchWithAuth(`${BASE_BACKEND_URL}/${resource}` + (queryParams ? `?${queryParams}` : ''));
     } catch (error) {
+        console.error(error.message);
         throw new Error(`Error when fetching ${resource}: ${error}`);
     }
 }

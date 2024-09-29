@@ -1,9 +1,23 @@
 <script>
-    let search = "";
+    import {createEventDispatcher} from "svelte";
+    const dispatch = createEventDispatcher();
+
+    export let search = "";
+
+    const handleChange = (e) => {
+        dispatch("search", search);
+    }
 </script>
 
 <div class="relative flex items-center">
-    <input type="text" class="w-full p-2 pl-10 border border-gray-300 rounded-2xl" placeholder="Search stick..." bind:value={search}/>
+    <input
+            type="text"
+            class="w-full p-2 pl-10 border border-gray-300 rounded-2xl placeholder-gray-300 text-black"
+            placeholder="Search stick..."
+            bind:value={search}
+            on:input={handleChange}
+            on:keydown={(e) => e.key === "Escape" && e.target.blur()}
+    />
     <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-2 w-6 h-6 text-gray-400" viewBox="0,0,256,256">
         <g fill="#bbbbbb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
             <g transform="scale(8.53333,8.53333)">

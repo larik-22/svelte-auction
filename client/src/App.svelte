@@ -12,6 +12,7 @@
   import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
   import Dashboard from "./pages/Dashboard.svelte";
   import HomeProper from "./pages/Home.svelte";
+  import AuctionPage from "./pages/AuctionPage.svelte";
 
   let page;
   let params;
@@ -19,6 +20,12 @@
 
   router('/', (ctx) => {
     page = HomeProper;
+    currentRoute = ctx.pathname;
+    params = ctx;
+  });
+
+  router("/stick/:id", (ctx) => {
+    page = AuctionPage;
     currentRoute = ctx.pathname;
     params = ctx;
   });

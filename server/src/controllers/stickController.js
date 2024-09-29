@@ -1,6 +1,7 @@
 import {data} from "../data/data.js";
 import * as utils from "../utils/utils.js";
 import {Stick, validateDynamicProperties, validateStaticStickProperties, validateStickDate} from "../model/Stick.js";
+import Fuse from 'fuse.js';
 
 export const getAllSticks = (req, res) => {
     if(data.sticks.length === 0){
@@ -17,7 +18,13 @@ const filterSticks = (sticks, filters) => {
     let filteredSticks = [...sticks];
 
     if (filters.name) {
-        filteredSticks = filteredSticks.filter(stick => stick.name.toLowerCase().includes(filters.name.toLowerCase()));
+        const fuse = new Fuse(filteredSticks, {
+            keys: ['name'],
+            threshold: 0.3
+        });
+
+        const result = fuse.search(filters.name);
+        filteredSticks = result.map(({ item }) => item);
     }
 
     if (filters.feature) {
@@ -84,9 +91,13 @@ export function getStickBids(req, res) {
         res.status(404).json({error: `${error.message}`});
     }
 }
+
 //201 returned
 export const createStick = (req, res) => {
     const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = req.body;
+
+    // validate date (we do partial validation here for being able to hard code dates in date.js)
+
 
     try {
         const stick = new Stick(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate);

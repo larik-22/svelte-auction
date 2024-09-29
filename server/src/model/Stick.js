@@ -15,10 +15,12 @@ export class Stick {
     startDate;
     endDate;
     bids;
+    validateFutureDates;
 
-    constructor(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate) {
+    constructor(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate, validateFutureDates = true) {
         this.#id = ++Stick.#idCounter;
         this.bids = [];
+        this.validateFutureDates = validateFutureDates;
 
         validateStaticStickProperties(name, description, estimatedPrice);
         this.name = name;
@@ -106,30 +108,31 @@ export function validateDynamicProperties(length, feature, typeOfTree, weight) {
     }
 }
 
-export function validateStickDate(startDateStr, endDateStr) {
-    // check if startDate is a valid date
+export function validateStickDate(startDateStr, endDateStr, validateFutureDates = true) {
     const startDate = new Date(startDateStr === null || startDateStr === undefined ? new Date() : startDateStr);
 
     if (isNaN(startDate.getTime())) {
         throw new Error('Invalid start date: must be a valid date.');
     }
 
-    if (startDate < new Date()) {
-        throw new Error('Invalid start date: must be a future date.');
-    }
-
-    // check if endDate is a valid date
     const endDate = new Date(endDateStr);
     if (isNaN(endDate.getTime())) {
         throw new Error('Invalid end date: must be a valid date.');
     }
 
-    if (endDate < new Date()) {
-        throw new Error('Invalid end date: must be a future date.');
-    }
-
-    // check if endDate is after startDate
     if (endDate < startDate) {
         throw new Error('Invalid end date: endDate must be after startDate.');
+    }
+
+    if (this?.validateFutureDates) {
+        // if startDate is not the current date, check if it is a future date
+        const currentDate = new Date();
+        if (startDateStr !== null && startDateStr !== undefined && startDate < currentDate) {
+            throw new Error('Invalid start date: must be a future date.');
+        }
+
+        if (endDate < currentDate) {
+            throw new Error('Invalid end date: must be a future date.');
+        }
     }
 }

@@ -14,7 +14,7 @@
         length: "",
         weight: "",
         feature: "",
-        typeOfTree: ""
+        typeOfTree: "",
     };
 
     let selectedLength = filters.length ? filters.length.split(",") : [];
@@ -28,6 +28,7 @@
 
     afterUpdate(() => {
         filters = {
+            ...filters,
             length: selectedLength.join(","),
             weight: selectedWeight.join(","),
             feature: selectedFeature.join(","),
@@ -64,7 +65,7 @@
     }
 </script>
 
-<div class="flex flex-col gap-6 border rounded-xl p-6 bg-white drop-shadow-sm">
+<div class="flex flex-col gap-6 border rounded-xl p-6 bg-white drop-shadow-sm sticky top-24 ">
     <div class="flex flex-col gap-6">
         <CheckboxFilterBlock label="Length" options={possibleLength} bind:selectedOptions={selectedLength}/>
         <CheckboxFilterBlock label="Weight" options={possibleWeight} bind:selectedOptions={selectedWeight}/>

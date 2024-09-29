@@ -7,7 +7,7 @@
     $: isAdmin = loggedIn && isUserAdmin();
 </script>
 
-<nav class="container flex justify-between items-center align-middle gap-4 py-4 border-b">
+<nav class="container-base flex justify-between items-center align-middle gap-4 py-4 border-b sticky top-0 z-50 bg-white">
     <a href="/" class="text-2xl font-bold">StickNation</a>
     <div class="flex gap-8 items-center">
         <a href="/" class:active={active === '/'}>Home</a>

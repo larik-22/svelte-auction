@@ -9,13 +9,15 @@ export class Bid {
     stickId;
     amount;
 
-    constructor(userId, stickId, amount) {
+    constructor(userId, stickId, amount, skipStickValidation = false) {
         this.#id = Bid.#idCounter++;
 
         validateUser(userId);
         this.userId = userId;
 
-        validateStick(stickId);
+        if (!skipStickValidation) {
+            validateStick(stickId);
+        }
         this.stickId = stickId;
 
         validateAmount(amount, stickId);
