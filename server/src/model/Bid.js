@@ -20,7 +20,7 @@ export class Bid {
         }
         this.stickId = stickId;
 
-        validateAmount(amount, stickId);
+        validateAmount(amount, stickId, userId);
         this.amount = amount;
 
         addBidToStick(this, stickId);
@@ -57,17 +57,25 @@ export const validateUser = (userId) => {
     }
 }
 
-export const validateAmount = (amount, stickId) => {
+export const validateAmount = (amount, stickId, userId) => {
     if (amount < 0) {
         throw new Error(`Amount must be a positive number`);
     }
 
-    // TODO: make sure the amount is higher than the current highest
-    //  bid AND higher than the starting price of the stick
     const stick = findItemById("sticks", stickId);
 
     // Get the highest bid amount or the estimated price if there are no bids
     const highestBid = Math.max(...stick.bids.map(bid => bid.amount), stick.estimatedPrice);
+
+    // Find the user who made the highest bid
+    // (Thanks AI for this unreadable code. I am gonna be replaced by it soon)
+    const highestBidUser = stick.bids.reduce((maxBid, bid) => {
+        return bid.amount > maxBid.amount ? bid : maxBid;
+    }, { amount: -Infinity }).userId;
+
+    if (highestBidUser === userId) {
+        throw new Error(`You can't bid on your own stick`);
+    }
 
     if (amount <= highestBid) {
         throw new Error(`${amount} is not higher than the current highest bid of ${highestBid}`);

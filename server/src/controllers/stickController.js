@@ -75,6 +75,7 @@ export const getStickById = (req, res) => {
 
     try {
         const stick = utils.findItemById("sticks", id);
+        delete stick.validateFutureDates
         res.json(utils.getItemsWithId([stick])[0]);
     } catch (error) {
         res.status(404).json({error: `${error.message}`});
@@ -102,7 +103,6 @@ export const createStick = (req, res) => {
     try {
         const stick = new Stick(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate);
         data.sticks.push(stick);
-
         res.status(201).json({message: `New stick with id ${stick.id} created successfully`, stick});
     } catch (error) {
         res.status(400).json({error: `${error.message}`});

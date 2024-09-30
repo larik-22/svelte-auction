@@ -10,10 +10,11 @@
 <nav class="container-base flex justify-between items-center align-middle gap-4 py-4 border-b sticky top-0 z-50 bg-white">
     <a href="/" class="text-2xl font-bold">StickNation</a>
     <div class="flex gap-8 items-center">
-        <a href="/" class:active={active === '/'}>Home</a>
         {#if loggedIn}
             {#if isAdmin}
                 <a href="/dashboard" class="py-2 px-4 bg-blue-800 text-white rounded border-2 border-blue-800" class:active={active === '/dashboard'}>Dashboard</a>
+                {:else}
+                <a href="/" class:active={active === '/'}>My account</a>
             {/if}
         {:else}
             <div class="flex items-center gap-2">
