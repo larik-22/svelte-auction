@@ -63,7 +63,7 @@
 </script>
 
 <!-- Adjusted display to indicate if it's a countdown to the start or end date -->
-<div class="flex flex-col items-center gap-4 px-4 py-10 bg-gray-50 rounded-lg shadow border sticky top-24">
+<div class="flex flex-col items-center gap-4 px-4 py-10 bg-gray-50 rounded-lg shadow border">
     <h2 class="text-xl font-semibold text-gray-800">
         Auction {mode === 'start' ? 'starts' : 'ends'} in:
     </h2>

@@ -13,6 +13,10 @@ router.get("/:id", isLoggedIn, isAdmin, (req, res) => {
     userController.getUserById(req, res);
 })
 
+router.get("/:id/bids", isLoggedIn, (req, res) => {
+    userController.getUserBids(req, res);
+})
+
 router.post("/", (req, res) => {
     userController.createUser(req, res);
 })

@@ -1,6 +1,7 @@
 <script>
     import {authToken} from "../stores/auth.js";
     import {isUserAdmin} from "../utils/auth.js";
+    import Button from "./Button.svelte";
 
     export let active;
     $: loggedIn = $authToken !== null;
@@ -12,14 +13,22 @@
     <div class="flex gap-8 items-center">
         {#if loggedIn}
             {#if isAdmin}
-                <a href="/dashboard" class="py-2 px-4 bg-blue-800 text-white rounded border-2 border-blue-800" class:active={active === '/dashboard'}>Dashboard</a>
+                <a href="/dashboard" class:active={active === '/dashboard'}>
+                    <Button>Dashboard</Button>
+                </a>
                 {:else}
-                <a href="/" class:active={active === '/'}>My account</a>
+                <a href="/account" class="border-blue-600" class:active={active === '/account'}>
+                    <Button>Account</Button>
+                </a>
             {/if}
         {:else}
             <div class="flex items-center gap-2">
-                <a href="/login" class="py-2 px-4 border-2 border-blue-600 text-blue-800 rounded" class:active={active === '/login'}>Login</a>
-                <a href="/register" class="py-2 px-4 bg-blue-600 text-white rounded border-2 border-blue-800" class:active={active === '/register'}>Register</a>
+                <a href="/login" class:active={active === '/login'}>
+                    <Button variant="secondary">Login</Button>
+                </a>
+                <a href="/register" class:active={active === '/register'}>
+                    <Button>Register</Button>
+                </a>
             </div>
         {/if}
     </div>

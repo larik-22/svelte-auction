@@ -1,70 +1,77 @@
 <script>
-  import logo from './assets/svelte.png'
-  import router from 'page';
+    import router from 'page';
 
-  import Home from "./pages/Home.svelte";
-  import About from "./pages/About.svelte";
-  import Header from "./components/Header.svelte";
-  import Register from "./pages/Register.svelte";
-  import Login from "./pages/Login.svelte";
-  import {isLoggedIn} from "./middleware/isLoggedIn.js";
-  import {isAdmin} from "./middleware/isAdmin.js";
-  import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
-  import Dashboard from "./pages/Dashboard.svelte";
-  import HomeProper from "./pages/Home.svelte";
-  import AuctionPage from "./pages/AuctionPage.svelte";
+    import About from "./pages/About.svelte";
+    import Header from "./components/Header.svelte";
+    import Register from "./pages/Register.svelte";
+    import Login from "./pages/Login.svelte";
+    import {isLoggedIn} from "./middleware/isLoggedIn.js";
+    import {isAdmin} from "./middleware/isAdmin.js";
+    import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
+    import Dashboard from "./pages/Dashboard.svelte";
+    import HomeProper from "./pages/Home.svelte";
+    import AuctionPage from "./pages/AuctionPage.svelte";
+    import Account from "./pages/Account.svelte";
+    import {isNotAdmin} from "./middleware/isNotAdmin.js";
 
-  let page;
-  let params;
-  let currentRoute;
+    let page;
+    let params;
+    let currentRoute;
 
-  router('/', (ctx) => {
-    page = HomeProper;
-    currentRoute = ctx.pathname;
-    params = ctx;
-  });
+    router('/', (ctx) => {
+        page = HomeProper;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    });
 
-  router("/stick/:id", (ctx) => {
-    page = AuctionPage;
-    currentRoute = ctx.pathname;
-    params = ctx;
-  });
+    router("/stick/:id", (ctx) => {
+        page = AuctionPage;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    });
 
-  router('/about', isLoggedIn, (ctx) => {
-    page = About;
-    currentRoute = ctx.pathname;
-    params = ctx;
-  });
+    router('/about', isLoggedIn, (ctx) => {
+        page = About;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    });
 
-  router('/register', isNotLoggedIn, (ctx) => {
-    page = Register;
-    currentRoute = ctx.pathname;
-    params = ctx;
-  });
+    router('/register', isNotLoggedIn, (ctx) => {
+        page = Register;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    });
 
-  router('/login', isNotLoggedIn, (ctx) => {
-    page = Login;
-    currentRoute = ctx.pathname;
-    params = ctx;
-  });
+    router('/login', isNotLoggedIn, (ctx) => {
+        page = Login;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    });
 
-  router('/dashboard', isLoggedIn, isAdmin, (ctx) => {
-    page = Dashboard;
-    currentRoute = ctx.pathname;
-    params = ctx;
-  });
+    router('/dashboard', isLoggedIn, isAdmin, (ctx) => {
+        page = Dashboard;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    });
 
-  router.start();
+    router('/account', isLoggedIn, isNotAdmin, (ctx) => {
+        page = Account;
+        currentRoute = ctx.pathname;
+        params = ctx;
+    })
+
+    router.start();
 </script>
 
 <main>
-  <Header active={currentRoute} />
-  <svelte:component this={page} {params} />
+    <Header active={currentRoute}/>
+    <svelte:component this={page} {params}/>
 </main>
 
 <style global lang="postcss">
-  @import './global.css';
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+    @import './global.css';
+
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
 </style>

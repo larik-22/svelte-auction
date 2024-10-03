@@ -51,6 +51,18 @@ export const getUserById = (req, res) => {
     }
 }
 
+export function getUserBids(req, res) {
+    const id = parseInt(req.params.id);
+
+    try {
+        const user = utils.findItemById("users", id);
+        const userBids = data.bids.filter(bid => bid.userId === user.id);
+        res.json(utils.getItemsWithId(userBids));
+    } catch (error) {
+        res.status(404).json({error: `${error.message}`});
+    }
+}
+
 export const createUser = (req, res) => {
     const {email, password} = req.body;
     // check if user with email already exists

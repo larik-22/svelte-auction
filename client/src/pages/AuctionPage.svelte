@@ -14,47 +14,63 @@
     let auctionStarted = false;
     let auctionEnded = false;
 
-    let addBidError;
     let bids = [];
+    let intervalId;
+    let addBidError;
+    let isFetching = false;
+    let postDebounce = false;
+
+    onMount(() => {
+        intervalId = setInterval(() => {
+            if (auctionStarted && !auctionEnded && !isFetching) {
+                fetchData();
+            }
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    });
 
     /**
      * Fetches the data for the auction stick.
      * Bids should be updated to trigger a re-render.
      */
     const fetchData = async () => {
+        if (isFetching || postDebounce) return;
+
         const fetchPromise = getApiData(`sticks/${id}`);
         const delayPromise = new Promise((resolve) => setTimeout(resolve, 300));
 
         return Promise.all([fetchPromise, delayPromise]).then(([data]) => {
             auctionStarted = new Date(data.startDate) < new Date();
             auctionEnded = new Date(data.endDate) < new Date();
-            bids = data.bids;
+            bids = data.bids; // Set bids based on the fresh data
             return data;
         });
     };
 
-    // this will ensure all users are up to date with the latest data
-    setInterval(() => {
-        if (auctionStarted) {
-            fetchData();
-        }
-    }, 1000)
-
     const postBid = async (bid) => {
-        bid = {...bid, stickId: parseInt(id)};
+        bid = { ...bid, stickId: parseInt(id) };
         try {
+            isFetching = true;
+            postDebounce = true; // Activate debounce to prevent immediate fetch
+            bids = [...bids, bid]; // Optimistically update UI
+
+            // Make POST request to backend
             await fetchWithAuth(`${BASE_BACKEND_URL}/bids`, {
                 method: 'POST',
-                body: JSON.stringify(bid)
+                body: JSON.stringify(bid),
             });
 
-            // if there will be a fetch error it won't reach this line and UI wont be updated.
-            bids = [...bids, bid];
             addBidError = null;
         } catch (e) {
             addBidError = e.message;
+        } finally {
+            isFetching = false;
+            setTimeout(() => {
+                postDebounce = false;
+            }, 1000);
         }
-    }
+    };
 
     const handleTimerEnd = (e) => {
         const timer = e.detail;
@@ -111,7 +127,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-full lg:col-span-6 lg:col-start-7">
+        <div class="col-span-full lg:col-span-6 lg:col-start-7 sticky top-24">
             {#if auctionStarted}
                 <div class="sticky top-24 flex flex-col gap-y-6">
                     {#if auctionEnded}

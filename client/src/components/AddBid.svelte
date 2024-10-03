@@ -34,8 +34,8 @@
             userId: jwtDecode($authToken).id
         }
 
-        dispatch('submitBid', newBid);
         amount = '';
+        dispatch('submitBid', newBid);
     }
 
     const validateBid = () => {
@@ -88,7 +88,6 @@
                     className="h-full"
                     on:click={handleBidSubmission}
                     disabled={!loggedIn || isAdmin || hasEnded || error || !amount}
-                    type="submit"
             >
                 Place bid
             </Button>

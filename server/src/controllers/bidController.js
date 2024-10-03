@@ -2,6 +2,7 @@ import {data} from "../data/data.js";
 import * as utils from "../utils/utils.js";
 import {jwtDecode} from "jwt-decode";
 import {Bid} from "../model/Bid.js";
+import {emitter} from "../index.js";
 
 export const createBid = (req, res) => {
     /*
@@ -20,6 +21,8 @@ export const createBid = (req, res) => {
     try {
         const newBid = new Bid(userId, stickId, amount);
         data.bids.push(newBid);
+
+        emitter.emit('new-bid', newBid);
 
         return res.status(201).json({
             message: "Bid created successfully.",
