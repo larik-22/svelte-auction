@@ -1,6 +1,8 @@
 <script>
     export let className = '';
     export let variant = '';
+    export let disabled = false;
+    export let type = 'button';
 
     let getVariant = () => {
         let defaultStyles = 'py-2 px-4 rounded transition-all duration-200 focus:outline focus:outline-2 focus:outline-black';
@@ -26,6 +28,6 @@
     }
 </script>
 
-<button class={`${getVariant()} ${className}`} on:click>
+<button class={`${getVariant()} ${className} disabled:bg-gray-200 disabled:cursor-not-allowed `} on:click disabled={disabled} type={type}>
     <slot></slot>
 </button>

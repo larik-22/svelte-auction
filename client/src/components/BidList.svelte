@@ -1,8 +1,9 @@
 <script>
     export let bids = [];
-
+    export let endDate;
+    let wonStyles = 'bg-green-100 text-green-800 border-green-300';
     // Sort the bids by amount in descending order
-    bids.sort((a, b) => b.amount - a.amount);
+    $: bids.sort((a, b) => b.amount - a.amount);
 </script>
 
 <style>
@@ -35,17 +36,17 @@
             All bids
         </div>
 
-        <div class="overflow-y-auto custom-scrollbar max-h-62 bg-gray-50 shadow rounded-md">
-            <div class="px-4">
+        <div class="overflow-y-auto custom-scrollbar max-h-64 bg-gray-50 shadow rounded-md">
+            <div class="">
                 {#each bids as bid, index}
                     {#if index === 0}
-                        <div class="bid-item flex justify-between items-center py-4 border-b">
-                            <span class="font-semibold text-gray-800">User {bid.userId}</span>
+                        <div class="px-4 bid-item flex justify-between items-center py-4 border-b {new Date() > new Date(endDate) ? wonStyles : ''}">
+                            <span class="font-semibold text-gray-800">User #{bid.userId}</span>
                             <span class="font-semibold text-lg text-blue-700 bg-blue-200 px-2 rounded">{bid.amount}</span>
                         </div>
                     {:else}
-                        <div class="bid-item flex justify-between items-center py-4 border-b">
-                            <span class="font-semibold text-gray-800">User {bid.userId}</span>
+                        <div class="px-4 bid-item flex justify-between items-center py-4 border-b">
+                            <span class="font-semibold text-gray-800">User #{bid.userId}</span>
                             <span class="font-bold text-lg text-blue-400 bg-blue-100 px-2 rounded">{bid.amount}</span>
                         </div>
                     {/if}
@@ -55,7 +56,7 @@
     </div>
     {:else}
     <div class="py-10 text-center border rounded-md bg-gray-50">
-        <p class="text-gray-600 text-lg font-semibold text-xl">No bids yet... Make first bid now!</p>
+        <p class="text-gray-600 font-semibold text-xl">No bids yet... Make first bid now!</p>
     </div>
 {/if}
 

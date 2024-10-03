@@ -6,7 +6,7 @@ export class Stick {
     #id;
     name;
     description;
-    estimatedPrice;
+    startingPrice;
     image;
     length;
     feature;
@@ -25,7 +25,7 @@ export class Stick {
         validateStaticStickProperties(name, description, estimatedPrice);
         this.name = name;
         this.description = description;
-        this.estimatedPrice = estimatedPrice;
+        this.startingPrice = estimatedPrice;
 
         // Image checking: if no image is provided, set a placeholder image
         if (isBlank(image)) {

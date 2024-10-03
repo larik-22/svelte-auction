@@ -41,18 +41,3 @@ export const handleAuthError = (error) => {
         page.redirect('/login');
     }
 };
-
-/**
- * Checks if the user is logged in
- * @returns {boolean} - true if the user is logged in, false otherwise
- */
-export const isUserLoggedIn = () => {
-    const token = get(authToken) || localStorage.getItem('token');
-
-    if(!token){
-        return false;
-    } else {
-        return true
-    }
-}
-

@@ -16,7 +16,6 @@
         feature: "",
         typeOfTree: ""
     };
-
     let name = "";
 
     beforeUpdate(() => {
@@ -41,7 +40,7 @@
     }
 
     /**
-     *
+     * Handles search event from SearchBar component
      * @param event
      */
     const handleSearch = (event) => {
