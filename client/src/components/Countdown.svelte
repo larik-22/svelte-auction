@@ -1,14 +1,32 @@
 <script>
-    import {createEventDispatcher, onMount} from "svelte";
-    const dispatch = createEventDispatcher()
-    export let start
-    let remainingTime = calculateTimeRemaining(start);
+    import { createEventDispatcher, onMount } from "svelte";
+    const dispatch = createEventDispatcher();
+
+    // Accept start and end date as props
+    export let start = null;
+    export let end = null;
+
+    // Mode prop: 'start' or 'end' to toggle countdown type
+    export let mode = 'start'; // Default mode is countdown to start
+
+    // Initialize remaining time based on selected mode
+    let targetDate = mode === 'start' ? start : end;
+    let remainingTime = calculateTimeRemaining(targetDate);
 
     let timer;
 
     onMount(() => {
+        if (mode === 'start' && start) {
+            targetDate = start;
+        } else if (mode === 'end' && end) {
+            targetDate = end;
+        } else {
+            console.error("Missing target date for countdown");
+            return;
+        }
         timer = setInterval(() => {
-            remainingTime = calculateTimeRemaining(start);
+            targetDate = mode === 'start' ? start : end;
+            remainingTime = calculateTimeRemaining(targetDate);
             if (remainingTime.total <= 0) {
                 handleEnd();
             }
@@ -19,7 +37,7 @@
         };
     });
 
-    // Function to calculate remaining time (Has to be declared that way)
+    // Function to calculate remaining time (same as before)
     function calculateTimeRemaining(target) {
         const now = new Date().getTime();
         const difference = target - now;
@@ -40,13 +58,15 @@
 
     const handleEnd = () => {
         clearInterval(timer);
-        dispatch('end')
-    }
+        dispatch('end', mode);
+    };
 </script>
 
-
-<div class="flex flex-col items-center gap-4 px-4 py-10 bg-gray-100 rounded-lg shadow border sticky top-24">
-    <h2 class="text-xl font-semibold text-gray-800">Auction starts in:</h2>
+<!-- Adjusted display to indicate if it's a countdown to the start or end date -->
+<div class="flex flex-col items-center gap-4 px-4 py-10 bg-gray-50 rounded-lg shadow border sticky top-24">
+    <h2 class="text-xl font-semibold text-gray-800">
+        Auction {mode === 'start' ? 'starts' : 'ends'} in:
+    </h2>
     <div class="flex justify-center gap-4">
         <div class="w-20 flex flex-col items-center p-2 bg-white rounded-md shadow-sm">
             <div class="text-2xl font-bold text-gray-800">{remainingTime.days}</div>

@@ -5,6 +5,8 @@
     import {authToken} from "../stores/auth.js";
     import {handleAuthResponse} from "../utils/auth.js";
 
+    export let params;
+
     let email = "";
     let password = "";
     let confirmPassword = "";
@@ -68,6 +70,9 @@
 
 <main class="min-h-[600px] flex flex-col justify-center items-center">
     <form class="flex flex-col max-w-4xl gap-6 m-auto p-8 bg-white shadow-lg rounded-lg w-full max-w-md">
+        {#if (errorMsg)}
+            <p class="text-red-500 text-center text-sm p-2 bg-red-50 border border-red-500 rounded-md">{errorMsg}</p>
+        {/if}
         <h1 class="text-2xl font-medium mb-2 text-center">Register</h1>
         <div class="flex flex-col gap-1">
             <label for="email" class="text-base font-medium">Email</label>
@@ -95,8 +100,5 @@
                 on:click|preventDefault={handleRegister}>
             Register
         </button>
-        {#if (errorMsg)}
-            <p class="text-red-500 text-center">{errorMsg}</p>
-        {/if}
     </form>
 </main>

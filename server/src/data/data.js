@@ -6,7 +6,7 @@ export const data = {
     bids: [],
     sticks: [
         new Stick("Mystery mace", "Majestic wonder stick for all your wizarding needs.", "https://utfs.io/f/199fd94f-51c3-4c00-ad30-3613e8444f9b-mxgjju.png", 45, "long", "straight", "Oak", "medium", null, "2024-12-31"),
-        new Stick( "Hitman's pistol", "A really cool stick that looks like a pistol.", "https://utfs.io/f/14d3c81f-4ef8-4460-a55f-1a47e2d2eda6-jm13wm.png", 70, "short", "curved", "Pine", "light", "2024-10-02T21:23", "2024-11-15"),
+        new Stick( "Hitman's pistol", "A really cool stick that looks like a pistol.", "https://utfs.io/f/14d3c81f-4ef8-4460-a55f-1a47e2d2eda6-jm13wm.png", 70, "short", "curved", "Pine", "light", "2024-10-03T15:56:00", "2024-10-03T15:56:12"),
         new Stick( "Harry Potter's Wand", "Magical wand stick of finest quality.", "https://utfs.io/f/fd0d6837-d565-4bd0-b1a0-6ff844e9613b-juxa5t.png", 55, "short", "knotty", "Maple", "light", null, "2025-01-01"),
         new Stick("Hobbit Stick", "A stick for the little, but strong people.", "https://utfs.io/f/KRle4R7mRPpsLoFZfldE8I5tnP6CeYGjhikuy7sQVOXMKWNx", 30, "medium", "straight", "Bamboo", "medium", "2024-09-14", "2024-09-15", false),
     ],

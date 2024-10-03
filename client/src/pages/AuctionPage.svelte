@@ -7,70 +7,72 @@
     import BidList from "../components/BidList.svelte";
     import AddBid from "../components/AddBid.svelte";
     import {BASE_BACKEND_URL} from "../config.js";
-    import {authToken} from "../stores/auth.js";
 
     export let params;
     const {id} = params.params;
 
-    // let loadingPromise;
-    let ws;
-    let auctionStarted;
+    let auctionStarted = false;
+    let auctionEnded = false;
+
     let addBidError;
     let bids = [];
 
+    /**
+     * Fetches the data for the auction stick.
+     * Bids should be updated to trigger a re-render.
+     */
     const fetchData = async () => {
         const fetchPromise = getApiData(`sticks/${id}`);
         const delayPromise = new Promise((resolve) => setTimeout(resolve, 300));
 
         return Promise.all([fetchPromise, delayPromise]).then(([data]) => {
             auctionStarted = new Date(data.startDate) < new Date();
+            auctionEnded = new Date(data.endDate) < new Date();
             bids = data.bids;
             return data;
         });
     };
 
-    afterUpdate(() => {
+    // this will ensure all users are up to date with the latest data
+    setInterval(() => {
         if (auctionStarted) {
             fetchData();
         }
-    })
+    }, 1000)
 
     const postBid = async (bid) => {
         bid = {...bid, stickId: parseInt(id)};
         try {
-            // await fetchWithAuth(`${BASE_BACKEND_URL}/bids`, {
-            //     method: 'POST',
-            //     body: JSON.stringify(bid)
-            // });
-            ws.send(JSON.stringify({ bid, token: $authToken }));
+            await fetchWithAuth(`${BASE_BACKEND_URL}/bids`, {
+                method: 'POST',
+                body: JSON.stringify(bid)
+            });
+
+            // if there will be a fetch error it won't reach this line and UI wont be updated.
+            bids = [...bids, bid];
             addBidError = null;
         } catch (e) {
             addBidError = e.message;
         }
     }
 
-    const handleTimerEnd = () => auctionStarted = true;
+    const handleTimerEnd = (e) => {
+        const timer = e.detail;
 
-    onMount(() => {
-        ws = new WebSocket('ws://localhost:8080');
+        if (timer === 'start') {
+            auctionStarted = true;
+        } else {
+            auctionEnded = true;
+        }
+    }
 
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.error) {
-                addBidError = data.error;
-            } else {
-                const newBid = data;
-                bids = [newBid, ...bids];
-            }
-        };
-
-        return () => {
-            ws.close();
-        };
-    });
-
-    // We need to display only these properties, but still want to keep the rest in the data object
-    const displayProperties = ['typeOfTree', 'length', 'weight', 'feature', 'startingPrice'];
+    const displayProperties = {
+        typeOfTree: 'Type of Tree',
+        length: 'Length',
+        weight: 'Weight',
+        feature: 'Feature',
+        startingPrice: 'Starting price'
+    };
 </script>
 
 <style>
@@ -98,9 +100,9 @@
                     </div>
                     <div class="px-4">
                         {#each Object.entries(data) as [key, value]}
-                            {#if displayProperties.includes(key)}
+                            {#if displayProperties[key]}
                                 <div class="border-item border-b border-gray-200 py-3 flex items-center gap-6">
-                                    <p class="text-gray-600 min-w-[28%]">{key}:</p>
+                                    <p class="text-gray-600 min-w-[28%]">{displayProperties[key]}:</p>
                                     <p class="text-gray-800 uppercase font-semibold text-lg">{value}</p>
                                 </div>
                             {/if}
@@ -111,11 +113,16 @@
         </div>
         <div class="col-span-full lg:col-span-6 lg:col-start-7">
             {#if auctionStarted}
-                <div class="sticky top-24 flex flex-col gap-y-8">
-                    <BidList bids={bids} endDate={data.endDate}/>
+                <div class="sticky top-24 flex flex-col gap-y-6">
+                    {#if auctionEnded}
+                        <p class="text-xl font-semibold text-gray-800 text-center">Auction has ended...</p>
+                    {:else}
+                        <Countdown end={new Date(data.endDate)} mode="end" on:end={handleTimerEnd}/>
+                    {/if}
+                    <BidList bids={bids} hasEnded={auctionEnded}/>
                     <AddBid
                             bids={bids}
-                            endDate={data.endDate}
+                            hasEnded={auctionEnded}
                             startingPrice={data.startingPrice}
                             on:submitBid={(e) => postBid(e.detail)}
                             error={addBidError}
@@ -124,6 +131,8 @@
             {:else}
                 <Countdown start={new Date(data.startDate)} on:end={handleTimerEnd}/>
             {/if}
+
+
         </div>
     {:catch error}
         {page.redirect('/')}
