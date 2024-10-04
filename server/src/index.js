@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import sticksRouter from "./routes/sticks.js";
 import bidsRouter from "./routes/bids.js";
 import usersRouter from "./routes/users.js";
-
+import { EventEmitter } from 'events';
 export const emitter = new EventEmitter();
 const app = express()
 const port = 3000

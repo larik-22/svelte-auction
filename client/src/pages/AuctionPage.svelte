@@ -15,19 +15,21 @@
     let auctionEnded = false;
 
     let bids = [];
-    let intervalId;
     let addBidError;
-    let isFetching = false;
-    let postDebounce = false;
 
     onMount(() => {
-        intervalId = setInterval(() => {
-            if (auctionStarted && !auctionEnded && !isFetching) {
-                fetchData();
-            }
-        }, 1000);
+        fetchData();
 
-        return () => clearInterval(intervalId);
+        // Set up SSE connection
+        const eventSource = new EventSource(`${BASE_BACKEND_URL}/bids/updates`);
+        eventSource.onmessage = (event) => {
+            const newBid = JSON.parse(event.data);
+            bids = [...bids, newBid];
+        };
+
+        return () => {
+            eventSource.close();
+        };
     });
 
     /**
@@ -35,15 +37,13 @@
      * Bids should be updated to trigger a re-render.
      */
     const fetchData = async () => {
-        if (isFetching || postDebounce) return;
-
         const fetchPromise = getApiData(`sticks/${id}`);
         const delayPromise = new Promise((resolve) => setTimeout(resolve, 300));
 
         return Promise.all([fetchPromise, delayPromise]).then(([data]) => {
             auctionStarted = new Date(data.startDate) < new Date();
             auctionEnded = new Date(data.endDate) < new Date();
-            bids = data.bids; // Set bids based on the fresh data
+            bids = data.bids;
             return data;
         });
     };
@@ -51,10 +51,6 @@
     const postBid = async (bid) => {
         bid = { ...bid, stickId: parseInt(id) };
         try {
-            isFetching = true;
-            postDebounce = true; // Activate debounce to prevent immediate fetch
-            bids = [...bids, bid]; // Optimistically update UI
-
             // Make POST request to backend
             await fetchWithAuth(`${BASE_BACKEND_URL}/bids`, {
                 method: 'POST',
@@ -64,11 +60,6 @@
             addBidError = null;
         } catch (e) {
             addBidError = e.message;
-        } finally {
-            isFetching = false;
-            setTimeout(() => {
-                postDebounce = false;
-            }, 1000);
         }
     };
 
