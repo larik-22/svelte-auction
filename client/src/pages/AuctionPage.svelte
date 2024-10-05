@@ -3,9 +3,9 @@
     import {fetchWithAuth, getApiData} from "../utils/api.js";
     import page from "page";
     import Loading from "../components/Loading.svelte";
-    import Countdown from "../components/Countdown.svelte";
-    import BidList from "../components/BidList.svelte";
-    import AddBid from "../components/AddBid.svelte";
+    import Countdown from "../components/bids/Countdown.svelte";
+    import BidList from "../components/bids/BidList.svelte";
+    import AddBid from "../components/bids/AddBid.svelte";
     import {BASE_BACKEND_URL} from "../config.js";
 
     export let params;

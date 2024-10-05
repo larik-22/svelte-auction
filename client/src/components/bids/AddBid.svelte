@@ -1,7 +1,7 @@
 <script>
-    import {authToken} from "../stores/auth.js";
-    import {isUserAdmin} from "../utils/auth.js";
-    import Button from "./Button.svelte";
+    import {authToken} from "../../stores/auth.js";
+    import {isUserAdmin} from "../../utils/auth.js";
+    import Button from "../Button.svelte";
     import {jwtDecode} from "jwt-decode";
     import {createEventDispatcher} from "svelte";
 

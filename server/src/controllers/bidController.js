@@ -20,7 +20,6 @@ export const createBid = (req, res) => {
 
     try {
         const newBid = new Bid(userId, stickId, amount);
-        data.bids.push(newBid);
 
         emitter.emit('new-bid', newBid);
 

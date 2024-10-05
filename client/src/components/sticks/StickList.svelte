@@ -1,5 +1,5 @@
 <script>
-    import ListItem from "./ListItem.svelte";
+    import ListItem from "./StickItem.svelte";
     export let items = [];
 </script>
 

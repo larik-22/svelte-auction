@@ -2,6 +2,7 @@
     import {authToken} from "../stores/auth.js";
     import {isUserAdmin} from "../utils/auth.js";
     import Button from "./Button.svelte";
+    import {logOut} from "../utils/auth.js";
 
     export let active;
     $: loggedIn = $authToken !== null;
@@ -10,7 +11,7 @@
 
 <nav class="container-base flex justify-between items-center align-middle gap-4 py-4 border-b sticky top-0 z-50 bg-white">
     <a href="/" class="text-2xl font-bold">StickNation</a>
-    <div class="flex gap-8 items-center">
+    <div class="flex gap-2 items-center">
         {#if loggedIn}
             {#if isAdmin}
                 <a href="/dashboard" class:active={active === '/dashboard'}>
@@ -21,6 +22,7 @@
                     <Button>Account</Button>
                 </a>
             {/if}
+            <Button variant="secondary" on:click={logOut}>Logout</Button>
         {:else}
             <div class="flex items-center gap-2">
                 <a href="/login" class:active={active === '/login'}>

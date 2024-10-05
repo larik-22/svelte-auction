@@ -16,12 +16,6 @@ export const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-//TODO: implement the rest of the functions
-export const deleteData = async (data, resource, id) => {
-    await deleteApiData(resource, id);
-    data = data.filter(item => item.id !== id);
-}
-
 export const validateEmail = (email) => {
     if(email == null || isBlank(email)) {
         return "Email cannot be empty";

@@ -2,7 +2,7 @@
     export let label;
     export let options = [];
     export let selectedOptions = [];
-    import { capitalizeFirstLetter } from "../utils/utils.js";
+    import { capitalizeFirstLetter } from "../../utils/utils.js";
 </script>
 
 <div class="flex flex-col gap-3">

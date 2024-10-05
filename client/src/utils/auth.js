@@ -33,6 +33,12 @@ export const isUserAdmin = () => {
     return decodedToken.isAdmin;
 };
 
+export const logOut = () => {
+    authToken.set(null);
+    localStorage.removeItem('token');
+    page.redirect('/login');
+};
+
 export const handleAuthError = (error) => {
     if (error.status === 401 || error.status === 403) {
         // Clear the token and redirect to login page

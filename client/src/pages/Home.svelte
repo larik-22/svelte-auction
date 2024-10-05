@@ -3,9 +3,9 @@
     import Loading from "../components/Loading.svelte";
     import { afterUpdate, beforeUpdate, onMount } from "svelte";
     import { fetchWithAuth, formatQueryParams, getApiData } from "../utils/api.js";
-    import List from "../components/List.svelte";
-    import SearchBar from "../components/SearchBar.svelte";
-    import Filters from "../components/Filters.svelte";
+    import List from "../components/sticks/StickList.svelte";
+    import SearchBar from "../components/filtering/SearchBar.svelte";
+    import Filters from "../components/filtering/Filters.svelte";
     import page from "page";
 
     export let params;

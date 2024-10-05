@@ -1,6 +1,6 @@
 <script>
-    import Button from "./Button.svelte";
-    import { capitalizeFirstLetter } from "../utils/utils.js";
+    import Button from "../Button.svelte";
+    import { capitalizeFirstLetter } from "../../utils/utils.js";
     import {afterUpdate, createEventDispatcher, onMount} from "svelte";
     import CheckboxFilterBlock from "./CheckboxFilterBlock.svelte";
 

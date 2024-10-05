@@ -1,8 +1,11 @@
 <script>
     export let bids = [];
-    export let hasEnded;
+    export let hasEnded = false;
+    export let highlightHighest = true;
+    export let className;
 
     let wonStyles = 'bg-green-100 text-green-800 border-green-300';
+
     // Sort the bids by amount in descending order
     $: bids.sort((a, b) => b.amount - a.amount);
 </script>
@@ -37,10 +40,10 @@
             All bids
         </div>
 
-        <div class="overflow-y-auto custom-scrollbar max-h-64 bg-gray-50 shadow rounded-md">
+        <div class="overflow-y-auto custom-scrollbar max-h-64 bg-gray-50 shadow rounded-md {className}">
             <div class="">
                 {#each bids as bid, index}
-                    {#if index === 0}
+                    {#if index === 0 && highlightHighest}
                         <div class="px-4 bid-item flex justify-between items-center py-4 border-b {hasEnded ? wonStyles : ''}">
                             <span class="font-semibold text-gray-800">User #{bid.userId}</span>
                             <span class="font-semibold text-lg text-blue-700 bg-blue-200 px-2 rounded {hasEnded ? wonStyles : ''}">{bid.amount}</span>
