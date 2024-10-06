@@ -1,17 +1,16 @@
 <script>
     import router from 'page';
 
-    import About from "./pages/About.svelte";
     import Header from "./components/Header.svelte";
     import Register from "./pages/Register.svelte";
     import Login from "./pages/Login.svelte";
-    import {isLoggedIn} from "./middleware/isLoggedIn.js";
-    import {isAdmin} from "./middleware/isAdmin.js";
-    import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
     import Dashboard from "./pages/Dashboard.svelte";
     import HomeProper from "./pages/Home.svelte";
     import AuctionPage from "./pages/AuctionPage.svelte";
     import Account from "./pages/Account.svelte";
+    import {isLoggedIn} from "./middleware/isLoggedIn.js";
+    import {isAdmin} from "./middleware/isAdmin.js";
+    import {isNotLoggedIn} from "./middleware/isNotLoggedIn.js";
     import {isNotAdmin} from "./middleware/isNotAdmin.js";
 
     let page;
@@ -26,12 +25,6 @@
 
     router("/stick/:id", (ctx) => {
         page = AuctionPage;
-        currentRoute = ctx.pathname;
-        params = ctx;
-    });
-
-    router('/about', isLoggedIn, (ctx) => {
-        page = About;
         currentRoute = ctx.pathname;
         params = ctx;
     });

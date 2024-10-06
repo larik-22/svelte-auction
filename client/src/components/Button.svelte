@@ -2,6 +2,7 @@
     export let className = '';
     export let variant = '';
     export let disabled = false;
+    export let applyStyle = true
 
     let getVariant = () => {
         let defaultStyles = 'py-2 px-4 rounded transition-all duration-200 focus:outline focus:outline-2 focus:outline-black';
@@ -10,6 +11,10 @@
             secondary: 'border border-blue-600 hover:bg-blue-600 hover:text-white text-blue-500 ',
             danger: 'bg-red-500 hover:bg-red-700 text-white',
             icon: "flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white"
+        }
+
+        if(!applyStyle){
+            return defaultStyles;
         }
 
         switch (variant){

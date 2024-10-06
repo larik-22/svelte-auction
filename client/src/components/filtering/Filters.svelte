@@ -53,7 +53,6 @@
             typeOfTree: ""
         };
 
-        console.log("Dispatching filterChange event with filters:", filters);
         dispatch('filterChange', filters);
     }
 

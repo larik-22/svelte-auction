@@ -22,10 +22,7 @@
                 stick.bids[stick.bids.length - 1].userId === decodedToken.id
             );
 
-            const obj = {wonAuctions, allBids: bidsData};
-            console.log(obj)
-
-            return obj
+            return {wonAuctions, allBids: bidsData};
         });
     };
 </script>
@@ -57,7 +54,7 @@
                 </div>
             </div>
             <div>
-                <h2 class="text-2xl font-semibold text-gray-700 mb-4">History of your bids:</h2>
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">History of all your bids:</h2>
                 <div class="grid grid-cols-1 gap-2">
                     {#if data.allBids.length > 0}
                         <BidList bids={data.allBids} highlightHighest={false} className="max-h-[310px]"/>

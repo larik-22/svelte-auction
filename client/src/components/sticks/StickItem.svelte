@@ -8,8 +8,6 @@
     let currentDate = new Date();
     let auctionStarted = new Date(item.startDate) < currentDate;
     let auctionEnded = new Date(item.endDate) < currentDate;
-
-
 </script>
 <div class="relative p-4 pt-8 shadow-md rounded-md flex flex-col items-start justify-items-start flex-grow gap-2 {className}">
     <div class="absolute left-0 right-0 top-0">

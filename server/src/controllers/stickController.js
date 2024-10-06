@@ -95,13 +95,11 @@ export function getStickBids(req, res) {
 
 //201 returned
 export const createStick = (req, res) => {
-    const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = req.body;
-
-    // validate date (we do partial validation here for being able to hard code dates in date.js)
-
+    const {name, description, image, startingPrice, length, feature, weight, startDate, endDate} = req.body;
 
     try {
-        const stick = new Stick(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate);
+        // name, description, image, startingPrice, length, feature, weight, startDate, endDate
+        const stick = new Stick(name, description, image, startingPrice, length, feature, weight, startDate, endDate);
         data.sticks.push(stick);
         res.status(201).json({message: `New stick with id ${stick.id} created successfully`, stick});
     } catch (error) {
@@ -114,8 +112,8 @@ export const updateStick = (req, res) => {
 
     try {
         const stick = utils.findItemById("sticks", id);
-        const {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = req.body;
-        const properties = {name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate};
+        const {name, description, image, startingPrice, length, feature, weight, startDate, endDate} = req.body;
+        const properties = {name, description, image, startingPrice, length, feature, weight, startDate, endDate};
 
         // validate properties first
         try {
@@ -158,20 +156,24 @@ export const deleteStick = (req, res) => {
  * @param newStick new stick object formed of passed body parameters
  */
 const validateStickOnUpdate = (oldStick, newStick) => {
-    const {name, description, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate} = newStick;
+    const {name, description, startingPrice, length, feature, weight, startDate, endDate} = newStick;
 
     // Validate static properties if they are present
-    if (name !== undefined) validateStaticStickProperties(name, oldStick.description, oldStick.estimatedPrice);
-    if (description !== undefined) validateStaticStickProperties(oldStick.name, description, oldStick.estimatedPrice);
-    if (estimatedPrice !== undefined) validateStaticStickProperties(oldStick.name, oldStick.description, estimatedPrice);
+    if (name !== undefined) validateStaticStickProperties(name, oldStick.description, oldStick.startingPrice);
+    if (description !== undefined) validateStaticStickProperties(oldStick.name, description, oldStick.startingPrice);
+    if (startingPrice !== undefined) validateStaticStickProperties(oldStick.name, oldStick.description, startingPrice);
 
     // Validate dynamic properties if they are present
-    if (length !== undefined) validateDynamicProperties(length, oldStick.feature, oldStick.typeOfTree, oldStick.weight);
-    if (feature !== undefined) validateDynamicProperties(oldStick.length, feature, oldStick.typeOfTree, oldStick.weight);
-    if (typeOfTree !== undefined) validateDynamicProperties(oldStick.length, oldStick.feature, typeOfTree, oldStick.weight);
-    if (weight !== undefined) validateDynamicProperties(oldStick.length, oldStick.feature, oldStick.typeOfTree, weight);
+    if (length !== undefined) validateDynamicProperties(length, oldStick.feature, oldStick.weight);
+    if (feature !== undefined) validateDynamicProperties(oldStick.length, feature, oldStick.weight);
+    if (weight !== undefined) validateDynamicProperties(oldStick.length, oldStick.feature, weight);
 
-    // Validate endDate if it is present
-    if (startDate !== undefined) validateStickDate(startDate, oldStick.endDate);
-    if (endDate !== undefined) validateStickDate(oldStick.startDate, endDate);
+    // Validate endDate and startDate if it is present
+    if (startDate !== undefined && endDate !== undefined) {
+        validateStickDate(startDate, endDate);
+    } else if (startDate !== undefined) {
+        validateStickDate(startDate, oldStick.endDate);
+    } else if (endDate !== undefined) {
+        validateStickDate(oldStick.startDate, endDate);
+    }
 }

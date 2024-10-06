@@ -2,7 +2,7 @@
     export let bids = [];
     export let hasEnded = false;
     export let highlightHighest = true;
-    export let className;
+    export let className = "";
 
     let wonStyles = 'bg-green-100 text-green-800 border-green-300';
 
@@ -11,24 +11,6 @@
 </script>
 
 <style>
-    /* Custom scrollbar styles */
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #dfdfdf;
-        border-radius: 10px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background-color: #a0a0a0;
-    }
-
     .bid-item:last-child{
         border-bottom: none;
     }

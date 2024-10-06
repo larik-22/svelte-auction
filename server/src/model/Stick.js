@@ -10,22 +10,21 @@ export class Stick {
     image;
     length;
     feature;
-    typeOfTree;
     weight;
     startDate;
     endDate;
     bids;
     validateFutureDates;
 
-    constructor(name, description, image, estimatedPrice, length, feature, typeOfTree, weight, startDate, endDate, validateFutureDates = true) {
+    constructor(name, description, image, startingPrice, length, feature, weight, startDate, endDate, validateFutureDates = true) {
         this.#id = ++Stick.#idCounter;
         this.bids = [];
         this.validateFutureDates = validateFutureDates;
 
-        validateStaticStickProperties(name, description, estimatedPrice);
+        validateStaticStickProperties(name, description, startingPrice);
         this.name = name;
         this.description = description;
-        this.startingPrice = estimatedPrice;
+        this.startingPrice = startingPrice;
 
         // Image checking: if no image is provided, set a placeholder image
         if (isBlank(image)) {
@@ -34,10 +33,9 @@ export class Stick {
             this.image = image;
         }
 
-        validateDynamicProperties(length, feature, typeOfTree, weight);
+        validateDynamicProperties(length, feature, weight);
         this.length = length;
         this.feature = feature;
-        this.typeOfTree = typeOfTree;
         this.weight = weight;
 
         validateStickDate(startDate, endDate);
@@ -54,7 +52,7 @@ export class Stick {
     }
 }
 
-export function validateStaticStickProperties(name, description, estimatedPrice) {
+export function validateStaticStickProperties(name, description, startingPrice) {
     // type checking
     if (!name || typeof name !== 'string') {
         throw new Error('Invalid name: must be a string.');
@@ -64,30 +62,30 @@ export function validateStaticStickProperties(name, description, estimatedPrice)
         throw new Error('Invalid description: must be a string.');
     }
 
-    if (!estimatedPrice || typeof estimatedPrice !== 'number') {
-        throw new Error('Invalid estimatedPrice: must be a number.');
+    if (!startingPrice || typeof startingPrice !== 'number') {
+        throw new Error('Invalid startingPrice: must be a number.');
     }
 
-    if(estimatedPrice < 0) throw new Error('Invalid estimatedPrice: must be a positive number.');
+    if(startingPrice < 0) throw new Error('Invalid startingPrice: must be a positive number.');
 
     // length checking
     for (let property of [name, description]) {
         if (isBlank(property)) {
             // log which property is blank
+            console.log("here")
             throw new Error(`Invalid ${property === name ? 'name' : 'description'}: must not be blank.`);
         }
     }
 }
 
-export function validateDynamicProperties(length, feature, typeOfTree, weight) {
+export function validateDynamicProperties(length, feature, weight) {
     const possibleLength = ['short', 'medium', 'long'];
     const possibleFeatures = ['straight', 'curved', 'knotty', 'special'];
-    const possibleTypeOfTree = ['oak', 'maple', 'pine', 'bamboo', 'cherry', 'other'];
     const possibleWeight = ['light', 'medium', 'heavy'];
 
-    for (let property of [length, feature, typeOfTree, weight]) {
+    for (let property of [length, feature, weight]) {
         if (isBlank(property)) {
-            throw new Error('Invalid property: must not be blank.');
+            throw new Error(`Invalid ${property}: must not be blank.`);
         }
     }
 
@@ -97,10 +95,6 @@ export function validateDynamicProperties(length, feature, typeOfTree, weight) {
 
     if (!possibleFeatures.includes(feature.toLowerCase())) {
         throw new Error('Invalid feature: must be ' + possibleFeatures.join(", ") + '.');
-    }
-
-    if (!possibleTypeOfTree.includes(typeOfTree.toLowerCase())) {
-        throw new Error('Invalid typeOfTree: must be ' + possibleTypeOfTree.join(", ") + '.');
     }
 
     if (!possibleWeight.includes(weight.toLowerCase())) {

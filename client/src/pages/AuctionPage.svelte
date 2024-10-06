@@ -33,7 +33,7 @@
     });
 
     /**
-     * Fetches the data for the auction stick.
+     * Fetches the data for the auctions stick.
      * Bids should be updated to trigger a re-render.
      */
     const fetchData = async () => {
@@ -74,7 +74,8 @@
     }
 
     const displayProperties = {
-        typeOfTree: 'Type of Tree',
+        name: 'Stick name',
+        description: 'Description',
         length: 'Length',
         weight: 'Weight',
         feature: 'Feature',
@@ -136,7 +137,9 @@
                     />
                 </div>
             {:else}
-                <Countdown start={new Date(data.startDate)} on:end={handleTimerEnd}/>
+                <div class="sticky top-24">
+                    <Countdown start={new Date(data.startDate)} on:end={handleTimerEnd}/>
+                </div>
             {/if}
 
 
