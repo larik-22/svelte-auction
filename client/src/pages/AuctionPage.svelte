@@ -23,8 +23,10 @@
         // Set up SSE connection
         const eventSource = new EventSource(`${BASE_BACKEND_URL}/bids/updates`);
         eventSource.onmessage = (event) => {
-            const newBid = JSON.parse(event.data);
-            bids = [...bids, newBid];
+            if(id === JSON.parse(event.data).stickId.toString()) {
+                const newBid = JSON.parse(event.data);
+                bids = [...bids, newBid];
+            }
         };
 
         return () => {

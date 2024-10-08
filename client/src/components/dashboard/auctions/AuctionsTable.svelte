@@ -44,7 +44,7 @@
                             {new Date(auction.endDate).toLocaleString()}
                         </span>
                 </td>
-                <td class="border border-transparent px-4 py-2 flex flex-col md:flex-row justify-center gap-2">
+                <td class="border px-4 py-2 flex flex-col md:flex-row justify-center gap-2">
                     <Button className="w-full md:w-1/2 border-blue-500 bg-blue-500 hover:bg-blue-600 flex items-center justify-center gap-2" on:click={() => openModal(auction)}>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"/>

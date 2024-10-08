@@ -5,13 +5,6 @@ import {Bid} from "../model/Bid.js";
 import {emitter} from "../index.js";
 
 export const createBid = (req, res) => {
-    /*
-    * 1. Decode the token from the request
-    * 2. Get the user id from the decoded token
-    * 3. Get the stick id from the request body
-    * 4. Get the amount from the request body
-    * 5. Create a new bid with the user id, stick id, and amount
-    * */
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwtDecode(token);
 

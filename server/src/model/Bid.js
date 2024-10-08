@@ -74,7 +74,7 @@ export const validateAmount = (amount, stickId, userId) => {
     }, { amount: -Infinity }).userId;
 
     if (highestBidUser === userId) {
-        throw new Error(`You can't bid on your own stick`);
+        throw new Error(`You can't overbid yourself`);
     }
 
     if (amount <= highestBid) {

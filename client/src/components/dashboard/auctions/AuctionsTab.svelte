@@ -29,7 +29,9 @@
     });
 
     const fetchData = async () => {
-        fetchWithAuth(`${BASE_BACKEND_URL}/users`)
+        // trigger security call, lol
+        await fetchWithAuth(`${BASE_BACKEND_URL}/users`)
+
         const fetchPromise = fetchWithAuth(`${BASE_BACKEND_URL}/sticks`);
         const delayPromise = new Promise((resolve) => setTimeout(resolve, 300));
 
@@ -80,7 +82,6 @@
 
             auctions = await fetchData();
         } catch (err) {
-            console.log(err)
             addError = err.message;
         } finally {
             closeModal();

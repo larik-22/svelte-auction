@@ -86,7 +86,7 @@
                     <tr>
                         <td class="border px-4 py-2 text-gray-600">{user.id}</td>
                         <td class="border px-4 py-2">{user.email}</td>
-                        <td class=" px-4 py-2 flex flex-col md:flex-row justify-center gap-2">
+                        <td class="border px-4 py-2 flex flex-col md:flex-row justify-center gap-2">
                             <Button className="w-full md:w-1/2 flex items-center gap-2" variant="danger" on:click={() => deleteUser(user.id)}>
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M 10 2 L 9 3 L 3 3 L 3 5 L 4.109375 5
