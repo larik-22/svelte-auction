@@ -1,6 +1,8 @@
 <script>
+    import { fade } from "svelte/transition";
     import ListItem from "./StickItem.svelte";
     export let items = [];
+
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-9 py-8 gap-6">

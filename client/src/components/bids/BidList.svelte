@@ -3,6 +3,8 @@
     export let hasEnded = false;
     export let highlightHighest = true;
     export let className = "";
+    import {fade} from "svelte/transition";
+    import {flip} from "svelte/animate";
 
     let wonStyles = 'bg-green-100 text-green-800 border-green-300';
 
@@ -22,7 +24,7 @@
             All bids
         </div>
 
-        <div class="overflow-y-auto custom-scrollbar max-h-64 bg-gray-50 shadow rounded-md {className}">
+        <div class="overflow-y-auto custom-scrollbar max-h-64 bg-gray-50 shadow rounded-md {className}" >
             <div class="">
                 {#each bids as bid, index}
                     {#if index === 0 && highlightHighest}

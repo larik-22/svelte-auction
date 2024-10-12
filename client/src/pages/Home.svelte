@@ -7,6 +7,8 @@
     import SearchBar from "../components/filtering/SearchBar.svelte";
     import Filters from "../components/filtering/Filters.svelte";
     import page from "page";
+    import { fade } from "svelte/transition";
+    import StickList from "../components/sticks/StickList.svelte";
 
     export let params;
 
@@ -114,9 +116,9 @@
                 </div>
             </div>
         {:then data}
-            <List items={data}/>
+            <StickList items={data}/>
         {:catch error}
-            <div class="w-full h-full flex flex-col items-center justify-center text-lg font-semibold">
+            <div class="w-full h-full flex flex-col items-center justify-center text-lg font-semibold" transition:fade={{duration:200}}>
                 <p>No auctions available... Please try again</p>
                 <p class="text-red-500">{error.message}</p>
             </div>

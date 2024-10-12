@@ -1,24 +1,100 @@
-###
-### Retrieve a token that can be used for calls requiring authentication
-###
-POST {{protocol}}{{host}}:{{port}}/auth
+@admin_token = ""
+@user_1_token = ""
+@user_2_token = ""
+
+### Good weather Login as an admin and set token for protected requests
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
 Content-Type: application/json
-Accept: application/json
 
 {
-  "username": "user",
-  "password": "pass"
+  "email": "admin@admin.com",
+  "password": "Admin123"
 }
 
 > {%
-client.global.set("token", "m1jnH3l3L4ng3en5uperV31l!geT0ken");
+    client.test("Admin login successful", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token != null, "Token not returned");
+        client.global.set("admin_token", response.body.token);
+    });
 %}
 
-
-###
-### Invalidate the token
-###
-DELETE {{protocol}}{{host}}:{{port}}/auth
+### Good weather Login as a user and set token for protected requests
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
 Content-Type: application/json
+
+{
+  "email": "bid@bidder.com",
+  "password": "Bidder123"
+}
+
+> {%
+    client.test("User login successful", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token != null, "Token not returned");
+        client.global.set("user_1_token", response.body.token);
+    });
+%}
+
+### Good weather Login as another user and set token for protected requests
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+Content-Type: application/json
+
+{
+  "email": "bid2@bidder.com",
+  "password": "Bidder123"
+}
+
+> {%
+    client.test("User login successful", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token != null, "Token not returned");
+        client.global.set("user_2_token", response.body.token);
+    });
+%}
+
+### Bad weather Login as a user with wrong password
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+Content-Type: application/json
+
+{
+  "email": "bid@bidder.com",
+  "password": "Bidder1234"
+}
+
+> {%
+    client.test("User login failed", function () {
+        client.assert(response.status === 401, "Response status is not 401");
+        client.assert(response.body.token == null, "Token returned");
+    });
+%}
+
+### Alter the token, to simulate scenario where token is invalid
+@altered_token = {{admin_token}}invalid
+
+### Test protected route (could be any) with invalid (altered/expired) token
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{altered_token}}
+
+> {%
+    client.test("Unauthorized access with altered token", function () {
+        client.assert(response.status === 401, "Response status is not 401");
+    });
+%}
+
+### Bad weather Login as an admin with wrong password
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+Content-Type: application/json
+
+{
+  "email": "admin@admin.com",
+  "password": "Admin1234"
+}
+
+> {%
+    client.test("Admin login failed", function () {
+        client.assert(response.status === 401, "Response status is not 401");
+        client.assert(response.body.token == null, "Token returned");
+    });
+%}

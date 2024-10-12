@@ -18,8 +18,6 @@
     let addBidError;
 
     onMount(() => {
-        fetchData();
-
         // Set up SSE connection
         const eventSource = new EventSource(`${BASE_BACKEND_URL}/bids/updates`);
         eventSource.onmessage = (event) => {

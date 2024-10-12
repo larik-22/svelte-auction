@@ -20,7 +20,6 @@
     onMount(async () => {
         try {
             auctions = await fetchData();
-
         } catch (err) {
             loadError = err.message;
         } finally {
@@ -101,27 +100,6 @@
         th, td {
             padding: 0.5rem;
         }
-    }
-
-    .table-scrollbar {
-        overflow-x: auto;
-    }
-
-    .table-scrollbar::-webkit-scrollbar {
-        height: 4px;
-    }
-
-    .table-scrollbar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    .table-scrollbar::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
-
-    .table-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #555;
     }
 </style>
 

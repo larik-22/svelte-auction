@@ -20,3 +20,4 @@ export const data = {
 new Bid(data.users[0].id, data.sticks[3].id, 45, true)
 new Bid(data.users[1].id, data.sticks[3].id, 50, true);
 new Bid(data.users[0].id, data.sticks[3].id, 60, true);
+data.sticks[3].validateFutureDates = true;

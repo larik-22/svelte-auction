@@ -65,7 +65,8 @@ export const validateAmount = (amount, stickId, userId) => {
     const stick = findItemById("sticks", stickId);
 
     // Get the highest bid amount or the estimated price if there are no bids
-    const highestBid = Math.max(...stick.bids.map(bid => bid.amount), stick.estimatedPrice);
+    const highestBid = Math.max(...stick.bids.map(bid => bid.amount), stick.startingPrice);
+
 
     // Find the user who made the highest bid
     // (Thanks AI for this unreadable code. I am gonna be replaced by it soon)

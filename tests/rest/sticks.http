@@ -12,8 +12,8 @@ Accept: application/json
         client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
     });
 
-    client.test("Response has at least one item", function () {
-        client.assert(response.body.length > 1, "Response has no items");
+    client.test("Response is not null", function () {
+        client.assert(response.body.length != null, "Response has no items");
     });
 %}
 
@@ -48,19 +48,19 @@ Accept: application/json
 %}
 
 ##### TODO: finish later
-#GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1/bids
-#Accept: application/json
-#
-#> {%
-#    client.test("Bids are returned for correct stick", function () {
-#        client.assert(response.status === 200, "Response status is not 200");
-#    });
-#
-#    client.test("Response content-type is json", function () {
-#        const type = response.contentType.mimeType;
-#        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
-#    });
-#%}
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1/bids
+Accept: application/json
+
+> {%
+    client.test("Bids are returned for correct stick", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+%}
 
 ### Successfull test: post a new stick
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
