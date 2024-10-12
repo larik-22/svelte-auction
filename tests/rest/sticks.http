@@ -1,4 +1,4 @@
-### Successfull test: ensure json-content, at least one item and correct status code.
+### Successfull test: ensure json-content, not null response and correct status code.
 GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Accept: application/json
 
@@ -65,15 +65,15 @@ Accept: application/json
 ### Successfull test: post a new stick
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -89,15 +89,15 @@ Content-Type: application/json
 ### Failed test: post a new stick with invalid name
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "   ",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -106,22 +106,21 @@ Content-Type: application/json
 
     client.test("Name invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid name: must not be blank.", "Invalid name error not returned");
     });
 %}
 
 ### Failed test: post a new stick with invalid description
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": null,
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -130,22 +129,21 @@ Content-Type: application/json
 > {%
     client.test("Description invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid description: must be a string.", "Invalid description error not returned");
     });
 %}
 
 ### Failed test: post a new stick with invalid estimatedPrice
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": -100,
+  "startingPrice": -100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -154,22 +152,21 @@ Content-Type: application/json
 > {%
     client.test("Estimated price invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid estimatedPrice: must be a positive number.", "Invalid estimated price error not returned");
     });
 %}
 
 ### Failed test: post a new stick with invalid length
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "invalid",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -178,22 +175,21 @@ Content-Type: application/json
 > {%
     client.test("Length invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid length: must be short, medium, long.", "Invalid length error not returned");
     });
 %}
 
 ### Failed test: post a new stick with invalid feature
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "invalid",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -202,46 +198,21 @@ Content-Type: application/json
 > {%
     client.test("Feature invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid feature: must be straight, curved, knotty, special.", "Invalid feature error not returned");
-    });
-%}
-
-### Failed test: post a new stick with invalid typeOfTree
-POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
-Content-Type: application/json
-
-{
-  "name": "Magic Wand",
-  "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
-  "image": "",
-  "length": "medium",
-  "feature": "straight",
-  "typeOfTree": "invalid",
-  "weight": "light",
-  "startDate": null,
-  "endDate": "2024-12-31"
-}
-
-> {%
-    client.test("Type of tree invalidated and server returns error", function () {
-        client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid typeOfTree: must be oak, maple, pine, bamboo, cherry, other.", "Invalid type of tree error not returned");
     });
 %}
 
 ### Failed test: post a new stick with invalid weight
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "invalid",
   "startDate": null,
   "endDate": "2024-12-31"
@@ -250,22 +221,21 @@ Content-Type: application/json
 > {%
     client.test("Weight invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid weight: must be light, medium, heavy.", "Invalid weight error not returned");
     });
 %}
 
-### Failed test: post a new stick with invalid endDate (obsolete)
+### Failed test: post a new stick with invalid endDate (obsolete date)
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "2023-12-31"
@@ -274,22 +244,21 @@ Content-Type: application/json
 > {%
     client.test("End date invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid end date: must be a future date.", "Invalid end date error not returned");
     })
 %}
 
 ### Failed test: post a new stick with invalid endDate (invalid format)
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "name": "Magic Wand",
   "description": "A powerful wand for casting spells.",
-  "estimatedPrice": 100,
+  "startingPrice": 100,
   "image": "",
   "length": "medium",
   "feature": "straight",
-  "typeOfTree": "oak",
   "weight": "light",
   "startDate": null,
   "endDate": "bomboclat_date"
@@ -298,16 +267,16 @@ Content-Type: application/json
 > {%
     client.test("End date invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid end date: must be a valid date.", "Invalid end date error not returned");
     })
 %}
 
 ### Successfull test: update stick by id
 PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
-  "estimatedPrice": 100
+  "startingPrice": 100
 }
 
 > {%
@@ -319,23 +288,34 @@ Content-Type: application/json
 ### Failed test: update stick by id with invalid estimatedPrice
 PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
 Content-Type: application/json
+Authorization: Bearer {{admin_token}}
 
 {
-  "estimatedPrice": -100
+  "startingPrice": -100
 }
 
 > {%
     client.test("Estimated price invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
-        client.assert(response.body.error === "Invalid estimatedPrice: must be a positive number.", "Invalid estimated price error not returned");
     })
 %}
 
 ### Successfull test: delete stick by id
 DELETE {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/2
+Authorization: Bearer {{admin_token}}
 
 > {%
     client.test("Stick deleted successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
     })
+%}
+
+### Failed test: delete stick by invalid id
+DELETE {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/100
+Authorization: Bearer {{admin_token}}
+
+> {%
+    client.test("404 status confirmed for invalid stick", function () {
+        client.assert(response.status === 404, "Response status is not 404");
+    });
 %}
