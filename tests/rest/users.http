@@ -1,5 +1,172 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=WebStorm
+### Good weather test of getting all users (as admin)
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Accept: application/json
+Authorization: Bearer {{admin_token}}
 
-###
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+
+    client.test("Response is not null", function () {
+        client.assert(response.body.length != null, "Response has no items");
+    });
+ %}
+
+### Bad weather test of getting all users with altered or expired token
+@alter_token = {{admin_token}}invalid
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Accept: application/json
+Authorization: Bearer {{alter_token}}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 401, "Response status is not 401");
+    });
+ %}
+
+### Good weather test of getting user's bids (as respective user).
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/users/bids
+Accept: application/json
+Authorization: Bearer {{user_1_token}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+
+    client.test("Response is not null", function () {
+        client.assert(response.body.length != null, "Response has no items");
+    });
+ %}
+
+### Bad weather test of getting user's bids with altered or expired token
+@alter_token_2 = {{user_1_token}}invalid
+
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/users/bids
+Accept: application/json
+Authorization: Bearer {{alter_token_2}}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 401, "Response status is not 401");
+    });
+ %}
+
+### Good weather test of registering a new user
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "test_user@gmail.com",
+    "password": "TestUser123"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+
+    client.test("Response content-type is json", function () {
+        const type = response.contentType.mimeType;
+        client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
+    });
+
+    client.test("Token returned", function () {
+        client.assert(response.body.token != null, "Token not returned");
+    });
+ %}
+
+### Bad weather test of registering twice with the same email
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "test_user@gmail.com",
+    "password": "TestUser123"
+}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 409, "Response status is not 409");
+    });
+ %}
+
+### Bad weather test of registering a new user with invalid email
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "test_user",
+    "password": "TestUser"
+}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+ %}
+
+### Bad weather test of registering a new user with invalid password (No number)
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "test_user_2@gmail.com",
+    "password": "TestUser"
+}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+
+### Bad weather test of registering a new user with invalid password (No uppercase)
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "test_user_2@gmail.com",
+    "password": "testuser1"
+}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+### Bad weather test of registering a new user with invalid password (Less than 8 characters)
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "test_user_2@gmail.com",
+  "password": "Test1"
+}
+
+> {%
+    client.test("Request failed", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+

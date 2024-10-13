@@ -40,19 +40,10 @@ export const getAllUsers = (req, res) => {
     res.status(200).json(getFormattedUsers(data.users));
 }
 
-export const getUserById = (req, res) => {
-    const id = parseInt(req.params.id);
-
-    try {
-        const user = utils.findItemById("users", id);
-        res.json(utils.getItemsWithId([user])[0]);
-    } catch (error) {
-        res.status(404).json({error: `${error.message}`});
-    }
-}
-
 export function getUserBids(req, res) {
-    const id = parseInt(req.params.id);
+    // check if id matches the user id in the token
+    const token = req.headers.authorization.split(" ")[1];
+    const id = jwt.verify(token, process.env.JWT_SECRET).id;
 
     try {
         const user = utils.findItemById("users", id);

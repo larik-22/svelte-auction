@@ -47,7 +47,7 @@ Accept: application/json
     });
 %}
 
-##### TODO: finish later
+### Successfull test: get bids for stick by id
 GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1/bids
 Accept: application/json
 
@@ -60,7 +60,22 @@ Accept: application/json
         const type = response.contentType.mimeType;
         client.assert(type === "application/json", `Expected 'application/json' but received '${type}'`);
     });
+
+    client.test("Bids are not null", function () {
+        client.assert(response.body.length != null, "Response has no items");
+    });
 %}
+
+### Failed test: get bids for stick by invalid id
+GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/100/bids
+Accept: application/json
+
+> {%
+    client.test("404 status confirmed for invalid stick", function () {
+        client.assert(response.status === 404, "Response status is not 404");
+    });
+%}
+
 
 ### Successfull test: post a new stick
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
@@ -80,7 +95,6 @@ Authorization: Bearer {{admin_token}}
 }
 
 > {%
-
     client.test("Stick created successfully", function () {
         client.assert(response.status === 201, "Response status is not 201");
     });
@@ -132,7 +146,7 @@ Authorization: Bearer {{admin_token}}
     });
 %}
 
-### Failed test: post a new stick with invalid estimatedPrice
+### Failed test: post a new stick with invalid startingPrice
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
 Content-Type: application/json
 Authorization: Bearer {{admin_token}}
@@ -270,6 +284,30 @@ Authorization: Bearer {{admin_token}}
     })
 %}
 
+### Failed test: post a new stick with invalid startDate (bigger than end date)
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "name": "Magic Wand",
+  "description": "A powerful wand for casting spells.",
+  "startingPrice": 100,
+  "image": "",
+  "length": "medium",
+  "feature": "straight",
+  "weight": "light",
+  "startDate": "2025-12-31",
+  "endDate": "2024-12-31"
+}
+
+> {%
+    client.test("Start date invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+
 ### Successfull test: update stick by id
 PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
 Content-Type: application/json
@@ -296,6 +334,21 @@ Authorization: Bearer {{admin_token}}
 
 > {%
     client.test("Estimated price invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect start date (higher than end date)
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "startDate": "2025-12-31"
+}
+
+> {%
+    client.test("Start date invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
     })
 %}

@@ -12,7 +12,7 @@
 
     const fetchData = async () => {
         const fetchSticksPromise = fetchWithAuth(`${BASE_BACKEND_URL}/sticks`);
-        const fetchBidsPromise = fetchWithAuth(`${BASE_BACKEND_URL}/users/${decodedToken.id}/bids`);
+        const fetchBidsPromise = fetchWithAuth(`${BASE_BACKEND_URL}/users/bids`);
         const delayPromise = new Promise((resolve) => setTimeout(resolve, 300));
 
         return Promise.all([fetchSticksPromise, fetchBidsPromise, delayPromise]).then(([sticksData, bidsData]) => {

@@ -9,11 +9,7 @@ router.get("/", isLoggedIn, isAdmin, (req, res) => {
     userController.getAllUsers(req, res);
 })
 
-router.get("/:id", isLoggedIn, isAdmin, (req, res) => {
-    userController.getUserById(req, res);
-})
-
-router.get("/:id/bids", isLoggedIn, (req, res) => {
+router.get("/bids", isLoggedIn, (req, res) => {
     userController.getUserBids(req, res);
 })
 

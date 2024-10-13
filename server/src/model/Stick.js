@@ -72,7 +72,6 @@ export function validateStaticStickProperties(name, description, startingPrice) 
     for (let property of [name, description]) {
         if (isBlank(property)) {
             // log which property is blank
-            console.log("here")
             throw new Error(`Invalid ${property === name ? 'name' : 'description'}: must not be blank.`);
         }
     }
