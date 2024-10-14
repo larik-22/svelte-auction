@@ -29,9 +29,14 @@
 
     const validateForm = (formData) => {
         validatePrice(formData);
+        validateDates(formData.startDate, formData.endDate);
+    }
 
-        if (new Date(formData.startDate) >= new Date(formData.endDate)) {
+    const validateDates = (startDate, endDate) => {
+        if (Date.parse(startDate) > Date.parse(endDate)) {
             throw 'End date must be greater than start date';
+        } else {
+            console.log("wtf")
         }
     }
 

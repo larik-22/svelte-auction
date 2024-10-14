@@ -8,7 +8,6 @@
     const possibleLength = ['short', 'medium', 'long'];
     const possibleWeight = ['light', 'medium', 'heavy'];
     const possibleFeatures = ['straight', 'curved', 'knotty', 'special'];
-    const possibleTypeOfTree = ['oak', 'maple', 'pine', 'bamboo', 'cherry', 'other'];
 
     export let filters = {
         length: "",
