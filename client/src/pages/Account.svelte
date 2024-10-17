@@ -9,6 +9,7 @@
 
     const decodedToken = jwtDecode($authToken);
 
+
     const fetchData = async () => {
         const fetchSticksPromise = fetchWithAuth(`${BASE_BACKEND_URL}/sticks`);
         const fetchBidsPromise = fetchWithAuth(`${BASE_BACKEND_URL}/users/bids`);
@@ -21,7 +22,13 @@
                 stick.bids[stick.bids.length - 1].userId === decodedToken.id
             );
 
-            return {wonAuctions, allBids: bidsData};
+            let totalAmount = wonAuctions.reduce((sum, auction) => {
+                // Get the highest bid amount
+                const highestBid = auction.bids.reduce((prev, current) => (prev.amount > current.amount) ? prev : current);
+                return sum + highestBid.amount;
+            }, 0);
+
+            return {wonAuctions, allBids: bidsData, totalAmount};
         });
     };
 </script>
@@ -34,11 +41,14 @@
             </div>
         </div>
     {:then data}
-        <h1 class="text-4xl font-bold text-blue-600">Hello,
-            <span class="text-gray-800">
-            {decodedToken.email}!
-        </span>
-        </h1>
+        <div class="flex flex-col gap-4">
+            <h1 class="text-4xl font-bold text-blue-600">Hello,
+                <span class="text-gray-800">
+                {decodedToken.email}!
+            </span>
+            </h1>
+            <p class="text-gray-500">You need to pay: <span class="font-semibold">${data.totalAmount.toFixed(2)}</span></p>
+        </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="col-span-full md:col-span-2">
                 <h2 class="text-2xl font-semibold text-gray-700 mb-4">List of won auctions:</h2>
