@@ -1,7 +1,5 @@
 # Testing
 
-> Place your test plan, test report and traceability matrix here
-
 ## Traceability matrix
 
 ### Functional
@@ -9,14 +7,14 @@
 The table below shows an overview of which test covers which functional requirements
 
 | Test | F1 | F2 | F3 | F4 | F5 | F6 | F7 | F8 | F9 | F10 | 
-|:----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|  T1  | x  | x  |    |    |    |    |    |    |    |    |
-|  T2  |    |    | x  |    |    |    |    |    |    |    |
-|  T3  |    |    |    | x  |    |    |    | x  | x  |    |
-|  T4  |    |    |    |    |    |    | x  |    |    |    |
-|  T5  |    |    |    |    | x  |    |    |    |    |    |
-|  T6  |    |    |    |    |    |    |    |    |    |  x |
-|  T7  |    |    |    |    |    | x  |    |    |    |    |
+|:----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:---:|
+|  T1  | X  | X  |    |    |    |    |    |    |    |     |
+|  T2  |    |    | X  |    |    |    |    |    |    |     |
+|  T3  |    |    |    | X  |    |    |    | X  | X  |     |
+|  T4  |    |    |    |    |    |    | X  |    |    |     |
+|  T5  |    |    |    |    | X  |    |    |    |    |     |
+|  T6  |    |    |    |    |    |    |    |    |    |  X  |
+|  T7  |    |    |    |    |    | X  |    |    |    |     |
 
 
 ### Non funtional
@@ -27,9 +25,9 @@ The table below shows an overview of which test covers which non-functional requ
 | Test | NF1 | NF2 | NF3 | NF4 | NF5 | NF6 | NF7 | NF8 | NF9 | NF10 | NF11 | NF12 | NF13 | NF14 | NF15 | NF16 | NF17 | NF18 | NF19 | 
 |:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
 |  U   |  X  |  X  |  X  |  X  |     |     |     |     |  X  |      |  X   |      |  X   |  X   |  X   |  X   |  X   |  X   |      |
-|  T3  |     |     |     |     |     |     |     |  X  |     |      |      |  x   |      |      |      |      |      |      |      |
-|  T4  |     |     |     |     |  x  |     |     |     |     |      |      |      |      |      |      |      |      |      |      |
-|  T7  |     |     |     |     |     |     |     |     |     |  x   |      |      |      |      |      |      |      |      |      |
+|  T3  |     |     |     |     |     |     |     |  X  |     |      |      |  X   |      |      |      |      |      |      |      |
+|  T4  |     |     |     |     |  X  |     |     |     |     |      |      |      |      |      |      |      |      |      |      |
+|  T7  |     |     |     |     |     |     |     |     |     |  X   |      |      |      |      |      |      |      |      |      |
 
 ## Test plan
 
