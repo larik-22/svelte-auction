@@ -17,6 +17,11 @@ export const generateToken = (user) => {
     return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
 }
 
+/**
+ * Verifies the token and returns the decoded payload.
+ * @param req - The request object.
+ * @returns {*} - The decoded payload.
+ */
 export const verifyToken = (req) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

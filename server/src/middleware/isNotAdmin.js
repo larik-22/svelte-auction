@@ -1,5 +1,8 @@
 import { verifyToken } from '../utils/jwt.js';
 
+/**
+ * Middleware to check if user is not an admin
+ */
 export const isNotAdmin = (req, res, next) => {
     try {
         const verified = verifyToken(req);

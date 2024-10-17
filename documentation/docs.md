@@ -1,3 +1,10 @@
+## Class Diagram
+I have created a class diagram for the project. 
+It shows the general model of the data and properties of the classes.
+As you can see, a user can have many bids. Bid is somewhat a junction table between User and Auction.
+Auction can have many bids. 
+![class_diagram](assets/class_diagram.png)
+
 ## Explanation of choices
 
 ### Tailwind CSS
