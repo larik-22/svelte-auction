@@ -2,7 +2,7 @@
     import {isBlank} from "../../../utils/utils.js";
 
     export let auction = {id: null, name: '', startDate: '', endDate: ''};
-    export let onSave = (formAuction) => {
+    export let onSave = () => {
     };
     export let onCancel = () => {
     };
@@ -19,11 +19,11 @@
 
         try {
             validateForm(formAuction);
-            onSave(formAuction);
+            onSave();
             error = null;
         } catch (err) {
             error = err;
-            return;
+
         }
     };
 

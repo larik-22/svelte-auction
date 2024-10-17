@@ -61,7 +61,7 @@
             const decoded = jwtDecode($authToken);
             if (bids[0].userId === decoded.id) {
                 error = `You can't overbid yourself!`;
-                return;
+
             }
         }
     };

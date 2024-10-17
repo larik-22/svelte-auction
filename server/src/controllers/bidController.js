@@ -1,5 +1,3 @@
-import {data} from "../data/data.js";
-import * as utils from "../utils/utils.js";
 import {jwtDecode} from "jwt-decode";
 import {Bid} from "../model/Bid.js";
 import {emitter} from "../index.js";

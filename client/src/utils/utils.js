@@ -1,5 +1,3 @@
-import {BASE_BACKEND_URL} from "../config.js";
-import {deleteApiData} from "./api.js";
 import validator from "validator/es";
 
 /**

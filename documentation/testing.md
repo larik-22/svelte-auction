@@ -9,11 +9,11 @@
 The table below shows an overview of which test covers which functional requirements
 
 | Test | F1 | F2 | F3 | F4 | F5 | F6 | F7 | F8 | F9 | F10 | 
-|:----:| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|  T1  | | | | | | | | | | |
-|  T2  | | | | | | | | | | |
-|  T3  | | | | | | | | | | |
-|  T4  | | | | | | | | | | |
+|:----:|:--:|:--:| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|  T1  | x  | x  | | | | | | | | |
+|  T2  |    |    | | | | | | | | |
+|  T3  |    |    | | | | | | | | |
+|  T4  |    |    | | | | | | | | |
 
 
 ### Non funtional
@@ -28,6 +28,30 @@ The table below shows an overview of which test covers which non-functional requ
 |  T4  |     |     |     |     |     |     |     |     |     |      |      |      |      |      |      |      |      |      |      |
 
 ## Test plan
+U: for un testable
 
+### Prerequisites:
+- Install dependencies both from client and server
+- Run the server using `npm run dev`
+- Run the client using `npm run dev`
+
+### T1: View all auctions and a specific auction
+1. Open the client in the browser (`http://localhost:5173/`)
+2. Check if the list of auctionable products or services is displayed on the screen
+3. Click on a `View Details` button on any auction
+4. Check if the mandatory details (end date, bid list, product name, price) are displayed on the screen
 
 ## Test report
+
+### T1: View all auctions and a specific auction
+- The list of auctionable products or services is displayed on the screen on homepage
+![img.png](assets/t1_step1.png)
+
+
+- When clicking on a `View Details` button, the details of the auction are displayed
+![img.png](assets/t1_step2.png)
+
+
+- The mandatory details (end date, bid list, product name, price) are displayed on the screen
+![img.png](assets/t1_step3.png)
+

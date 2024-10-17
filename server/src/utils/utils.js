@@ -1,5 +1,4 @@
 import {data} from "../data/data.js";
-import {Stick} from "../model/Stick.js";
 
 /**
  * Check if a string is blank.

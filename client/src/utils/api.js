@@ -1,7 +1,11 @@
 import {BASE_BACKEND_URL} from "../config.js";
 import {handleAuthError} from "./auth.js";
-import {isBlank} from "./utils.js";
 
+/**
+ * Makes a protected fetch call
+ * @param url - the URL to
+ * @param options - the options to pass to the fetch call
+ */
 export const fetchWithAuth = async (url, options = {}) => {
     const token = localStorage.getItem('token') || '';
 
@@ -24,6 +28,7 @@ export const fetchWithAuth = async (url, options = {}) => {
 
     return await response.json();
 };
+
 /**
  * Extracts id parameter from the URL
  * @param resource - the resource to post the entry to
@@ -58,20 +63,3 @@ export const formatQueryParams = (filters) => {
         .join('&');
 }
 
-/**
- * Deletes an entry from the API
- * @param resource - the resource to delete the entry from
- * @param id - the id of the entry to delete
- * @returns {Promise<Response>}
- */
-export const deleteApiData = async (resource, id) => {
-    const response = await fetchWithAuth(`${BASE_BACKEND_URL}/${resource}/${id}`, {
-        method: 'DELETE'
-    });
-
-    if (!response.ok) {
-        throw new Error(`Error when deleting ${resource}: ${response.status}`);
-    }
-
-    return response;
-}

@@ -64,12 +64,18 @@ Authorization: Bearer {{alter_token_2}}
  %}
 
 ### Good weather test of registering a new user
+< {%
+    const randomEmail = Math.random().toString(36).substring(2, 15) + "@gmail.com";
+    request.variables.set("randomEmail", randomEmail)
+%}
+
 POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
 Content-Type: application/json
 Accept: application/json
 
+
 {
-    "email": "test_user@gmail.com",
+    "email": "{{randomEmail}}",
     "password": "TestUser123"
 }
 
@@ -94,7 +100,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "email": "test_user@gmail.com",
+    "email": "bid@bidder.com",
     "password": "TestUser123"
 }
 

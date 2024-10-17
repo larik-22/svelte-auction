@@ -1,14 +1,13 @@
 <script>
     import {jwtDecode} from "jwt-decode";
     import {authToken} from "../stores/auth.js";
-    import {fetchWithAuth, getApiData} from "../utils/api.js";
+    import {fetchWithAuth} from "../utils/api.js";
     import StickItem from "../components/sticks/StickItem.svelte";
     import BidList from "../components/bids/BidList.svelte";
     import Loading from "../components/Loading.svelte";
     import {BASE_BACKEND_URL} from "../config.js";
 
-    const token = $authToken;
-    const decodedToken = jwtDecode(token);
+    const decodedToken = jwtDecode($authToken);
 
     const fetchData = async () => {
         const fetchSticksPromise = fetchWithAuth(`${BASE_BACKEND_URL}/sticks`);

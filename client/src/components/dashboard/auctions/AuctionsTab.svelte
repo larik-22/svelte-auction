@@ -1,8 +1,6 @@
 <script>
-    import {afterUpdate, onMount} from "svelte";
-    import {jwtDecode} from "jwt-decode";
-    import {authToken} from "../../../stores/auth.js";
-    import {fetchWithAuth, getApiData} from "../../../utils/api.js";
+    import {onMount} from "svelte";
+    import {fetchWithAuth} from "../../../utils/api.js";
     import {BASE_BACKEND_URL} from "../../../config.js";
     import Loading from "../../Loading.svelte";
     import Button from "../../Button.svelte";

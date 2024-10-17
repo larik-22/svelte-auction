@@ -117,7 +117,6 @@ Authorization: Bearer {{admin_token}}
   "endDate": "2024-12-31"
 }
 > {%
-
     client.test("Name invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
     });
@@ -354,7 +353,7 @@ Authorization: Bearer {{admin_token}}
 %}
 
 ### Successfull test: delete stick by id
-DELETE {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/2
+DELETE {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/4
 Authorization: Bearer {{admin_token}}
 
 > {%

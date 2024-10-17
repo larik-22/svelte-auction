@@ -1,9 +1,7 @@
 <script>
-    import Button from "../components/Button.svelte";
     import Loading from "../components/Loading.svelte";
     import { afterUpdate, beforeUpdate } from "svelte";
     import { formatQueryParams, getApiData } from "../utils/api.js";
-    import List from "../components/sticks/StickList.svelte";
     import SearchBar from "../components/filtering/SearchBar.svelte";
     import Filters from "../components/filtering/Filters.svelte";
     import page from "page";

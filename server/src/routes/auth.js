@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
     const user = getUserByEmail(email);
 
     if(!user){
-        res.status(401).json({error: `User with email ${email} not found`});
+        res.status(404).json({error: `User with email ${email} not found`});
         return;
     }
 

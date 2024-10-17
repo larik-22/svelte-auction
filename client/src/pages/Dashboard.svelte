@@ -1,5 +1,4 @@
 <script>
-    import {fetchWithAuth} from "../utils/api.js";
     import {jwtDecode} from "jwt-decode";
     import {authToken} from "../stores/auth.js";
     import Sidebar from "../components/dashboard/Sidebar.svelte";
@@ -8,8 +7,7 @@
 
     export let params;
 
-    const token = $authToken;
-    const decodedToken = jwtDecode(token);
+    const decodedToken = jwtDecode($authToken);
 
     let activeTab = 0;
     let tabs = ["Auctions", "Users"];
@@ -29,7 +27,4 @@
             {/if}
         {/if}
     </div>
-    <!--sidebar with tabs: users and auctions -->
-    <!--tabs users: delete users -->
-    <!--tabs auctions: add, delete auctions -->
 </section>

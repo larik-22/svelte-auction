@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import sticksRouter from "./routes/sticks.js";
-import bidsRouter from "./routes/bids.js";
 import usersRouter from "./routes/users.js";
 import { EventEmitter } from 'events';
 export const emitter = new EventEmitter();
@@ -30,9 +29,8 @@ app.use(express.urlencoded({ extended: true }));
  **/
 const apiRouter = express.Router();
 
-apiRouter.use("/auth", auth);
+apiRouter.use("/tokens", auth);
 apiRouter.use("/sticks", sticksRouter);
-apiRouter.use("/bids", bidsRouter);
 apiRouter.use("/users", usersRouter);
 
 app.use('/api', apiRouter);

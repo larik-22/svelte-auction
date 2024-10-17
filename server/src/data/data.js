@@ -1,5 +1,5 @@
 import {Stick} from "../model/Stick.js";
-import {checkUserPassword, User} from "../model/User.js";
+import {User} from "../model/User.js";
 import {Bid} from "../model/Bid.js";
 
 export const data = {

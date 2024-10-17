@@ -1,5 +1,4 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
 
     export let isOpen = false;
     export let title = '';

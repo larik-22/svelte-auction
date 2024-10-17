@@ -3,7 +3,7 @@
 @user_2_token = ""
 
 ### Good weather Login as an admin and set token for protected requests
-POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/tokens
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 %}
 
 ### Good weather Login as a user and set token for protected requests
-POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/tokens
 Content-Type: application/json
 
 {
@@ -37,7 +37,7 @@ Content-Type: application/json
 %}
 
 ### Good weather Login as another user and set token for protected requests
-POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/tokens
 Content-Type: application/json
 
 {
@@ -54,7 +54,7 @@ Content-Type: application/json
 %}
 
 ### Bad weather Login as a user with wrong password
-POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/tokens
 Content-Type: application/json
 
 {
@@ -70,7 +70,7 @@ Content-Type: application/json
 %}
 
 ### Alter the token, to simulate scenario where token is invalid
-@altered_token = {{admin_token}}invalid
+@altered_token = "bomboclat"
 
 ### Test protected route (could be any) with invalid (altered/expired) token
 GET {{protocol}}//{{host}}:{{port}}/{{default_path}}/users
@@ -84,7 +84,7 @@ Authorization: Bearer {{altered_token}}
 %}
 
 ### Bad weather Login as an admin with wrong password
-POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/auth
+POST {{protocol}}//{{host}}:{{port}}/{{default_path}}/tokens
 Content-Type: application/json
 
 {

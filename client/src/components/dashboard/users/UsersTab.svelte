@@ -1,14 +1,13 @@
 <script>
-    import {afterUpdate, onMount} from "svelte";
+    import {onMount} from "svelte";
     import {authToken} from "../../../stores/auth.js";
-    import {fetchWithAuth, getApiData} from "../../../utils/api.js";
+    import {fetchWithAuth} from "../../../utils/api.js";
     import {BASE_BACKEND_URL} from "../../../config.js";
     import Loading from "../../Loading.svelte";
     import Button from "../../Button.svelte";
     import {jwtDecode} from "jwt-decode";
 
-    const token = $authToken;
-    const decodedToken = jwtDecode(token);
+    const decodedToken = jwtDecode($authToken);
     let users = [];
     let loading = true;
     let error = null;

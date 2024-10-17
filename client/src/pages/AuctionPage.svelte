@@ -1,5 +1,5 @@
 <script>
-    import {afterUpdate, onMount} from "svelte";
+    import {onMount} from "svelte";
     import {fetchWithAuth, getApiData} from "../utils/api.js";
     import page from "page";
     import Loading from "../components/Loading.svelte";
@@ -19,7 +19,7 @@
 
     onMount(() => {
         // Set up SSE connection
-        const eventSource = new EventSource(`${BASE_BACKEND_URL}/bids/updates`);
+        const eventSource = new EventSource(`${BASE_BACKEND_URL}/sticks/bid-updates`);
         eventSource.onmessage = (event) => {
             if(id === JSON.parse(event.data).stickId.toString()) {
                 const newBid = JSON.parse(event.data);
@@ -52,7 +52,7 @@
         bid = { ...bid, stickId: parseInt(id) };
         try {
             // Make POST request to backend
-            await fetchWithAuth(`${BASE_BACKEND_URL}/bids`, {
+            await fetchWithAuth(`${BASE_BACKEND_URL}/sticks/bids`, {
                 method: 'POST',
                 body: JSON.stringify(bid),
             });

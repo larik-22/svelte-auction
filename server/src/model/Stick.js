@@ -47,9 +47,6 @@ export class Stick {
         return this.#id;
     }
 
-    get idCounter() {
-        return Stick.#idCounter;
-    }
 }
 
 export function validateStaticStickProperties(name, description, startingPrice) {

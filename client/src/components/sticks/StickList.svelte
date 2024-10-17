@@ -1,5 +1,4 @@
 <script>
-    import { fade } from "svelte/transition";
     import ListItem from "./StickItem.svelte";
     export let items = [];
 

@@ -1,8 +1,7 @@
 <script>
-    import page from "page";
     import {validateEmail, validatePassword} from "../utils/utils.js";
-    import {authToken} from "../stores/auth.js";
     import {handleAuthResponse} from "../utils/auth.js";
+    import {BASE_BACKEND_URL} from "../config.js";
 
     export let params
 
@@ -18,7 +17,7 @@
         let isValid = validateData(email, password);
         if (!isValid) return;
 
-        const response = await fetch("http://localhost:3000/api/auth", {
+        const response = await fetch(`${BASE_BACKEND_URL}/tokens`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -85,5 +84,6 @@
                 on:click|preventDefault={handleLogin}>
             Login
         </button>
+        <p class="text-center text-sm text-gray-400">Don't have an account? <a href="/register" class="text-blue-500 underline">Register</a></p>
     </form>
 </main>

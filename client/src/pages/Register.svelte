@@ -1,8 +1,6 @@
 <script>
-    import page from "page";
     import {validateEmail, validatePassword} from "../utils/utils.js";
     import {BASE_BACKEND_URL} from "../config.js";
-    import {authToken} from "../stores/auth.js";
     import {handleAuthResponse} from "../utils/auth.js";
 
     export let params;
@@ -100,5 +98,6 @@
                 on:click|preventDefault={handleRegister}>
             Register
         </button>
+        <p class="text-center text-sm text-gray-400">Already have an account? <a href="/login" class="text-blue-500 underline">Login</a></p>
     </form>
 </main>
