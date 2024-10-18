@@ -53,13 +53,17 @@ export const getApiData = async (resource, filters = {}) => {
  * @returns {string} - the query string
  */
 export const formatQueryParams = (filters) => {
-    //loop through the keys and if the value is not empty, add it to the query string
-    return Object.keys(filters)
-        .filter(key => filters[key] && filters[key].trim() !== "")
-        .map(key => filters[key]
-            .split(',')
-            .map(value => `${key}=${value}`)
-            .join('&'))
-        .join('&');
+    const searchParams = new URLSearchParams();
+
+    Object.keys(filters).forEach(key => {
+        if (filters[key] && filters[key].trim() !== "") {
+            filters[key].split(',').forEach(value => {
+                searchParams.append(key, value);
+            });
+        }
+    });
+
+    return searchParams.toString();
 }
+
 

@@ -5,12 +5,13 @@
 ### Functional
 
 The table below shows an overview of which test covers which functional requirements
+`U` – **untestable requirement, that was met**
 
 | Test | F1 | F2 | F3 | F4 | F5 | F6 | F7 | F8 | F9 | F10 | 
 |:----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:---:|
 |  T1  | X  | X  |    |    |    |    |    |    |    |     |
 |  T2  |    |    | X  |    |    |    |    |    |    |     |
-|  T3  |    |    |    | X  |    |    |    | X  | X  |     |
+|  T3  |    |    |    | U  |    |    |    | X  | X  |     |
 |  T4  |    |    |    |    |    |    | X  |    |    |     |
 |  T5  |    |    |    |    | X  |    |    |    |    |     |
 |  T6  |    |    |    |    |    |    |    |    |    |  X  |
@@ -48,15 +49,17 @@ The table below shows an overview of which test covers which non-functional requ
 3. Type in a search query `ma`
 4. Ensure two stick auctions are displayed (`Mystery Mace`, `Hitman's Stick`)
 
-### T3: Bids placement 
+### T3: Bids placement  
 1. Open the client in the browser (`http://localhost:5173/`)
-2. Login with first bidder credentials (`bid@bidder.com, Bidder123`)
-3. Open incognito mode in the browser and open the client (`http://localhost:5173/`)
-4. Open `Mystery Mace` auction in both browsers
-5. Place a bid on the auction in the first browser (as a logged-in user)
-6. Check if the bid is displayed in the second browser
-7. Ensure the bid is not modifiable or removable by refreshing the page and checking if it stays there
-8. Ensure you are unable to put bid in a second browser window (as a not logged-in user) by seeing that button is disabled
+2. Click `Register` button
+3. Fill in the registration form with `user@test.com, Testing123` and register
+4. Open `Mystery Mace` auction as registered user 
+5. Open incognito mode in the browser and open the client (`http://localhost:5173/`)
+6. Open `Mystery Mace` auction in both browsers 
+7. Place a bid on the auction in the first browser (as a logged-in user)
+8. Check if the bid is displayed in the second browser 
+9. Ensure the bid it stays there, after refreshing the page 
+10. Ensure you are unable to put bid in a second browser window (as a not logged-in user) by seeing that button is disabled
 
 ### T4: Filtering auctions
 1. Open the client in the browser (`http://localhost:5173/`)

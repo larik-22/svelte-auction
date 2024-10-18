@@ -1,16 +1,18 @@
 import {data} from "../data/data.js";
 import {findItemById} from "../utils/utils.js";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export class Bid {
-    static #idCounter = 0
+    // static #idCounter = 0
 
-    #id;
+    id;
     userId;
     stickId;
     amount;
 
     constructor(userId, stickId, amount, skipStickValidation = false) {
-        this.#id = Bid.#idCounter++;
+        this.id = uuidv4();
 
         validateUser(userId);
         this.userId = userId;
@@ -27,7 +29,7 @@ export class Bid {
     }
 
     get id() {
-        return this.#id;
+        return this.id;
     }
 }
 

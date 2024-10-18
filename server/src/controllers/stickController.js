@@ -43,6 +43,19 @@ const filterSticks = (sticks, filters) => {
         filteredSticks = filterByProperty(filteredSticks, filters, "typeOfTree");
     }
 
+    // add sorting (name, price) with order (asc, desc)
+    if (filters.sortBy) {
+        const sortType = filters.sortBy;
+        const sortOrder = filters.sortOrder === 'desc' ? -1 : 1; // default to ascending order
+
+        if (sortType === "name") {
+            filteredSticks.sort((a, b) => sortOrder * a.name.localeCompare(b.name));
+        } else if (sortType === "price") {
+            filteredSticks.sort((a, b) => sortOrder * (a.startingPrice - b.startingPrice));
+        }
+    }
+
+
     return filteredSticks;
 }
 

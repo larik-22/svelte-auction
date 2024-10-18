@@ -7,6 +7,7 @@
     import page from "page";
     import { fade } from "svelte/transition";
     import StickList from "../components/sticks/StickList.svelte";
+    import Sort from "../components/filtering/Sort.svelte";
 
     export let params;
 
@@ -16,6 +17,12 @@
         feature: "",
         typeOfTree: ""
     };
+
+    let sort = {
+        sortBy: "name",
+        sortOrder: "asc"
+    };
+
     let name = "";
 
     beforeUpdate(() => {
@@ -26,7 +33,7 @@
 
     let loadingPromise;
     afterUpdate(() => {
-        const fetchPromise = getApiData("sticks", { ...filters, name });
+        const fetchPromise = getApiData("sticks", { ...filters, name, ...sort });
         const delayPromise = new Promise(resolve => setTimeout(resolve, 300));
 
         loadingPromise = Promise.all([fetchPromise, delayPromise]).then(([data]) => {
@@ -36,7 +43,7 @@
 
     async function filterChange(event) {
         filters = event.detail;
-        updateUrl({ ...filters, name });
+        updateUrl({ ...filters, ...sort, name });
     }
 
     /**
@@ -45,15 +52,20 @@
      */
     const handleSearch = (event) => {
         name = event.detail;
-        updateUrl({ ...filters, name });
+        updateUrl({ ...filters, ...sort, name });
+    };
+
+    const handleSort = (event) => {
+        sort = event.detail;
+        updateUrl({...filters, ...sort, name});
     };
 
     /**
-     * Updates URL with new filters
-     * @param filters - new filters
+     * Updates URL with new filters and sorts
+     * @param object - new filters and sorts
      */
-    const updateUrl = (filters) => {
-        const queryParams = formatQueryParams(filters);
+    const updateUrl = (object) => {
+        const queryParams = formatQueryParams(object);
         if (!queryParams) {
             page(params.pathname)
         } else {
@@ -106,7 +118,14 @@
         <Filters on:filterChange={filterChange} filters={filters}/>
     </div>
     <div class="col-span-1 md:col-span-4 lg:col-span-9">
-        <SearchBar on:search={handleSearch}/>
+        <div class="grid grid-cols-6 gap-2">
+            <div class="col-span-5">
+                <SearchBar on:search={handleSearch}/>
+            </div>
+            <div class="col-span-1 flex items-stretch">
+                <Sort on:sortChange={handleSort}/>
+            </div>
+        </div>
         {#await loadingPromise}
             <div class="w-full h-full flex flex-col items-center justify-center">
                 <div class="w-40 h-40">
