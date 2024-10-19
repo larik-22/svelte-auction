@@ -322,7 +322,7 @@ Authorization: Bearer {{admin_token}}
     })
 %}
 
-### Failed test: update stick by id with invalid estimatedPrice
+### Failed test: update stick by id with invalid starting price
 PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
 Content-Type: application/json
 Authorization: Bearer {{admin_token}}
@@ -348,6 +348,112 @@ Authorization: Bearer {{admin_token}}
 
 > {%
     client.test("Start date invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+
+### Failed test: update stick with incorrect end date (lower than start date)
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "endDate": "2023-12-31"
+}
+
+> {%
+    client.test("End date invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect end date (invalid format)
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "endDate": "bomboclat_date"
+}
+
+> {%
+    client.test("End date invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect name
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "name": "   "
+}
+
+> {%
+    client.test("Name invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect description
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "description": null
+}
+
+> {%
+    client.test("Description invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect length
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "length": "invalid"
+}
+
+> {%
+    client.test("Length invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect feature
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "feature": "invalid"
+}
+
+> {%
+    client.test("Feature invalidated and server returns error", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    })
+%}
+
+### Failed test: update stick with incorrect weight
+PATCH {{protocol}}//{{host}}:{{port}}/{{default_path}}/sticks/1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "weight": "invalid"
+}
+
+> {%
+    client.test("Weight invalidated and server returns error", function () {
         client.assert(response.status === 400, "Response status is not 400");
     })
 %}

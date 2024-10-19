@@ -27,7 +27,7 @@ The table below shows an overview of which test covers which non-functional requ
 |:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
 |  U   |  X  |  X  |  X  |  X  |     |     |     |     |  X  |      |  X   |      |  X   |  X   |  X   |  X   |  X   |  X   |      |
 |  T3  |     |     |     |     |     |     |     |  X  |     |      |      |  X   |      |      |      |      |      |      |      |
-|  T4  |     |     |     |     |  X  |     |     |     |     |      |      |      |      |      |      |      |      |      |      |
+|  T4  |     |     |     |     |  X  |  X  |     |     |     |      |      |      |      |      |      |      |      |      |      |
 |  T7  |     |     |     |     |     |     |     |     |     |  X   |      |      |      |      |      |      |      |      |      |
 
 ## Test plan
@@ -66,6 +66,8 @@ The table below shows an overview of which test covers which non-functional requ
 2. Try to prefill this url in the browser: `http://localhost:5173/?length=short&length=medium&weight=medium&feature=straight`
 3. Ensure correct checkboxes are checked in the filter section (length: short, medium; feature: straight; weight: medium)
 4. Ensure only `Hobbit Stick` auction is displayed
+5. Reset the filters by clicking on the `Reset filters` button
+6. Order filters by price in ascending and descending order by clicking the arrow near the `Price` label
 
 ### T5: Client validation when placing bid
 1. Open the client in the browser (`http://localhost:5173/`)
